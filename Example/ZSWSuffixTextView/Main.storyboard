@@ -25,7 +25,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Test indeed, my good sir"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="I am suffix text which has the proud honor of wrapping to multiple lines"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="— I am suffix text which has the proud honor of wrapping to multiple lines"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="suffixSpacing">
                                         <real key="value" value="4"/>
                                     </userDefinedRuntimeAttribute>

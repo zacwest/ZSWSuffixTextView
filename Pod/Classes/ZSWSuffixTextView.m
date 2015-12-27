@@ -191,16 +191,6 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     [self setNeedsLayout];
 }
 
-- (NSAttributedString *)attributedPlaceholder {
-    return self.placeholderLabel.attributedText;
-}
-
-- (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder {
-    self.placeholderLabel.attributedText = attributedPlaceholder;
-    _cachedPlaceholderFrame = CGRectZero;
-    [self setNeedsLayout];
-}
-
 - (UIColor *)placeholderTextColor {
     return self.placeholderLabel.textColor;
 }
