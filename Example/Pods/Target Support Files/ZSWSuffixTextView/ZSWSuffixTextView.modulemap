@@ -1,0 +1,6 @@
+framework module ZSWSuffixTextView {
+  umbrella header "ZSWSuffixTextView-umbrella.h"
+
+  export *
+  module * { export * }
+}

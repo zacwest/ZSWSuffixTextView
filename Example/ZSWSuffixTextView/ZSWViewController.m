@@ -7,8 +7,10 @@
 //
 
 #import "ZSWViewController.h"
+@import ZSWSuffixTextView;
 
 @interface ZSWViewController ()
+@property (weak, nonatomic) IBOutlet ZSWSuffixTextView *suffixTextView;
 
 @end
 
@@ -18,6 +20,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    self.suffixTextView.placeholder = @"Hello";
 }
 
 - (void)didReceiveMemoryWarning
