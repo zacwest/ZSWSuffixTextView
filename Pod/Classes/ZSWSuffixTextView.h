@@ -20,6 +20,7 @@ IB_DESIGNABLE
 
 @property (nullable, nonatomic) IBInspectable NSString *suffix;
 @property (nullable, nonatomic) IBInspectable NSAttributedString *attributedSuffix;
+@property (nonatomic) IBInspectable CGFloat suffixSpacing; // between typed text and suffix string, default 5.0
 
 @end
 

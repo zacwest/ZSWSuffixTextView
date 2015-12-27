@@ -39,7 +39,9 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     return self;
 }
 
-- (void)suffixTextViewCommonInit {    
+- (void)suffixTextViewCommonInit {
+    self.suffixSpacing = 5.0;
+    
     self.placeholderLabel = [[UILabel alloc] init];
     self.placeholderLabel.font = self.font;
     self.placeholderLabel.textColor = [UIColor colorWithWhite:0.6 alpha:1.0];
@@ -118,6 +120,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
             sizeThatFits.width = MIN(sizeThatFits.width, remainingWidth);
             
             self.placeholderLabel.frame = (CGRect){firstRect.origin, sizeThatFits};
+            _cachedPlaceholderFrame = self.placeholderLabel.frame;
         } else {
             self.placeholderLabel.frame = _cachedPlaceholderFrame;
         }
@@ -129,23 +132,24 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         if (state & ZSWSuffixStatePlaceholder) {
             priorRect = self.placeholderLabel.frame;
         } else {
-            priorRect = [self firstRectForRange:[self textRangeFromPosition:[self positionFromPosition:self.endOfDocument offset:-1] toPosition:self.endOfDocument]];
+            priorRect = CGRectOffset([self caretRectForPosition:self.endOfDocument], 0, 1);
         }
 
         if (CGRectGetMaxX(priorRect) < CGRectGetMaxX(self.insetBounds)) {
             __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
             
-            NSMutableParagraphStyle *paragraphStyle = ^NSMutableParagraphStyle *{
-                NSParagraphStyle *existingStyle = [self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange];
-                
-                if (!existingStyle) {
-                    existingStyle = [NSParagraphStyle defaultParagraphStyle];
-                }
-                
-                return [existingStyle mutableCopy];
-            }();
+            NSMutableParagraphStyle *paragraphStyle = [[self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange] mutableCopy];
             
-            paragraphStyle.firstLineHeadIndent = CGRectGetMaxX(priorRect) - self.textContainerInset.left;
+            if (!paragraphStyle) {
+                paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            }
+
+            // Get the indent inside our label's positioning, since the priorRect includes bounds insets
+            CGFloat indent = CGRectGetMaxX(priorRect) - CGRectGetMinX(self.insetBounds);
+            // Custom-provided spacing, too.
+            indent += self.suffixSpacing;
+            
+            paragraphStyle.firstLineHeadIndent = indent;
             
             NSMutableAttributedString *updatedString = [self.attributedSuffix mutableCopy];
             [updatedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:effectiveRange];
@@ -211,6 +215,11 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setSuffix:(NSString *)suffix {
     self.suffixLabel.text = suffix;
+    [self textViewDidChange_ZSW];
+}
+
+- (void)setSuffixSpacing:(CGFloat)suffixSpacing {
+    _suffixSpacing = suffixSpacing;
     [self textViewDidChange_ZSW];
 }
 

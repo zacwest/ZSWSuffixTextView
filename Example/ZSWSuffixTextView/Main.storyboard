@@ -21,11 +21,14 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
                                 <rect key="frame" x="20" y="28" width="560" height="564"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Test indeed, my good sir"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="I am suffix text which has the proud honor of wrapping to multiple lines"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="suffixSpacing">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textView>
                         </subviews>
