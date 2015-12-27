@@ -17,6 +17,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 @interface ZSWSuffixTextView()
 @property (nonatomic) UILabel *placeholderLabel;
 @property (nonatomic) UILabel *suffixLabel;
+@property (nonatomic) BOOL suffixLabelPositionIsDirty;
 @end
 
 @implementation ZSWSuffixTextView {
@@ -42,6 +43,8 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 }
 
 - (void)suffixTextViewCommonInit {
+    self.suffixLabelPositionIsDirty = YES;
+    
     self.suffixSpacing = 5.0;
     
     self.placeholderLabel = [[UILabel alloc] init];
@@ -128,7 +131,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         }
     }
     
-    if (state & ZSWSuffixStateSuffix) {
+    if (state & ZSWSuffixStateSuffix && self.suffixLabelPositionIsDirty) {
         CGRect priorRect;
         
         if (state & ZSWSuffixStatePlaceholder) {
@@ -169,6 +172,9 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         CGSize sizeThatFits = [self.suffixLabel sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
         
         self.suffixLabel.frame = CGRectMake(CGRectGetMinX(self.insetBounds), CGRectGetMinY(priorRect), width, sizeThatFits.height);
+        
+        self.contentSize = self.contentSize; // force an update
+        self.suffixLabelPositionIsDirty = NO;
     }
 }
 
@@ -181,8 +187,25 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         self.suffixLabel.hidden = !(suffixState & ZSWSuffixStateSuffix);
         [self setNeedsLayout];
     } else if (suffixState & ZSWSuffixStateSuffix) {
+        self.suffixLabelPositionIsDirty = YES;
         // Always layout when we have a suffix set, because its position changes
         [self setNeedsLayout];
+    }
+}
+
+#pragma mark -
+
+- (void)setContentSize:(CGSize)contentSize {
+    ZSWSuffixState visibleState = self.visibleSuffixState;
+    
+    if (visibleState & ZSWSuffixStateSuffix) {
+        CGSize updatedSize = contentSize;
+        updatedSize.height = CGRectGetMaxY(self.suffixLabel.frame);
+        if (!CGSizeEqualToSize(self.contentSize, updatedSize)) {
+            [super setContentSize:updatedSize];
+        }
+    } else {
+        [super setContentSize:contentSize];
     }
 }
 
