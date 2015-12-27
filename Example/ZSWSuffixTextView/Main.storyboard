@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
-                                <rect key="frame" x="20" y="28" width="560" height="564"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="I am being forced to wrap prematurely, which hurts m" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
+                                <rect key="frame" x="20" y="28" width="560" height="272"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -35,7 +35,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="PFN-Y1-o2I" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leadingMargin" id="9D8-YL-Hed"/>
-                            <constraint firstItem="Mvr-aV-6Um" firstAttribute="top" secondItem="PFN-Y1-o2I" secondAttribute="bottom" constant="8" symbolic="YES" id="b11-gu-n0q"/>
+                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="bottom" secondItem="Mvr-aV-6Um" secondAttribute="top" constant="-300" id="b11-gu-n0q"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PFN-Y1-o2I" secondAttribute="trailing" id="iWb-lh-d55"/>
                             <constraint firstItem="PFN-Y1-o2I" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" constant="8" symbolic="YES" id="icm-GP-aTd"/>
                         </constraints>

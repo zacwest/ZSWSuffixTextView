@@ -134,30 +134,35 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         } else {
             priorRect = CGRectOffset([self caretRectForPosition:self.endOfDocument], 0, 1);
         }
-
-        if (CGRectGetMaxX(priorRect) < CGRectGetMaxX(self.insetBounds)) {
-            __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
-            
-            NSMutableParagraphStyle *paragraphStyle = [[self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange] mutableCopy];
-            
-            if (!paragraphStyle) {
-                paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-            }
-
-            // Get the indent inside our label's positioning, since the priorRect includes bounds insets
-            CGFloat indent = CGRectGetMaxX(priorRect) - CGRectGetMinX(self.insetBounds);
-            // Custom-provided spacing, too.
-            indent += self.suffixSpacing;
-            
-            paragraphStyle.firstLineHeadIndent = indent;
-            
-            NSMutableAttributedString *updatedString = [self.attributedSuffix mutableCopy];
-            [updatedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:effectiveRange];
-            self.suffixLabel.attributedText = updatedString;
-        } else {
-            priorRect = CGRectMake(CGRectGetMinX(priorRect), CGRectGetMaxY(priorRect), 0, CGRectGetHeight(priorRect));
+        
+        __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
+        
+        NSMutableParagraphStyle *paragraphStyle = [[self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange] mutableCopy];
+        
+        if (!paragraphStyle) {
+            paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         }
         
+        // Get the indent inside our label's positioning, since the priorRect includes bounds insets
+        CGFloat indent = CGRectGetMaxX(priorRect) - CGRectGetMinX(self.insetBounds);
+        // Custom-provided spacing, too.
+        indent += self.suffixSpacing;
+        
+        if (indent >= CGRectGetWidth(self.insetBounds)) {
+            CGFloat lineHeight = self.suffixLabel.font.lineHeight;
+            lineHeight *= paragraphStyle.lineHeightMultiple ?: 1.0;
+            lineHeight = MIN(MAX(lineHeight, paragraphStyle.minimumLineHeight), paragraphStyle.maximumLineHeight ?: CGFLOAT_MAX);
+            
+            priorRect.origin.y += lineHeight + paragraphStyle.lineSpacing;
+            paragraphStyle.firstLineHeadIndent = 0;
+        } else {
+            paragraphStyle.firstLineHeadIndent = indent;
+        }
+        
+        NSMutableAttributedString *updatedString = [self.attributedSuffix mutableCopy];
+        [updatedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:effectiveRange];
+        self.suffixLabel.attributedText = updatedString;
+    
         CGFloat width = CGRectGetWidth(self.insetBounds);
         CGSize sizeThatFits = [self.suffixLabel sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
         
