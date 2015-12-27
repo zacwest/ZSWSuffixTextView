@@ -23,6 +23,8 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     CGRect _cachedPlaceholderFrame;
 }
 
+@synthesize suffixTextColor = _suffixTextColor; // so we know if the user set it, or if we inherited
+
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -44,7 +46,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     
     self.placeholderLabel = [[UILabel alloc] init];
     self.placeholderLabel.font = self.font;
-    self.placeholderLabel.textColor = [UIColor colorWithWhite:0.6 alpha:1.0];
+    self.placeholderTextColor = [UIColor colorWithWhite:0.70 alpha:1.0];
     [self addSubview:self.placeholderLabel];
     
     Class labelClass = NSClassFromString(@"ZSWTappableLabel");
@@ -227,6 +229,15 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     [self textViewDidChange_ZSW];
 }
 
+- (UIColor *)suffixTextColor {
+    return self.suffixLabel.textColor;
+}
+
+- (void)setSuffixTextColor:(UIColor *)suffixTextColor {
+    _suffixTextColor = suffixTextColor;
+    self.suffixLabel.textColor = suffixTextColor;
+}
+
 - (void)setFont:(UIFont *)font {
     [super setFont:font];
     self.placeholderLabel.font = font;
@@ -234,14 +245,17 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     [self textViewDidChange_ZSW];
 }
 
-- (void)setTextColor:(UIColor *)textColor {
-    [super setTextColor:textColor];
-    self.suffixLabel.textColor = textColor;
-}
-
 - (void)setText:(NSString *)text {
     [super setText:text];
     [self textViewDidChange_ZSW];
+}
+
+- (void)setTextColor:(UIColor *)textColor {
+    [super setTextColor:textColor];
+    
+    if (!_suffixTextColor) {
+        self.suffixLabel.textColor = textColor;
+    }
 }
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
@@ -249,6 +263,10 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     
     self.placeholderLabel.font = self.font;
     self.suffixLabel.font = self.font;
+    
+    if (!_suffixTextColor) {
+        self.suffixLabel.textColor = self.textColor;
+    }
     
     [self textViewDidChange_ZSW];
 }

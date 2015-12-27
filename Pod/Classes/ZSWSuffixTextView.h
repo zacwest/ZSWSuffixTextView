@@ -16,6 +16,7 @@ IB_DESIGNABLE
 @property (null_resettable, nonatomic) IBInspectable UIColor *placeholderTextColor;
 @property (nullable, nonatomic) IBInspectable NSString *placeholder;
 
+@property (null_resettable, nonatomic) IBInspectable UIColor *suffixTextColor;
 @property (nullable, nonatomic) IBInspectable NSString *suffix;
 @property (nullable, nonatomic) IBInspectable NSAttributedString *attributedSuffix;
 @property (nonatomic) IBInspectable CGFloat suffixSpacing; // between typed text and suffix string, default 5.0
