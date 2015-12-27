@@ -17,11 +17,11 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 @interface ZSWSuffixTextView()
 @property (nonatomic) UILabel *placeholderLabel;
 @property (nonatomic) UILabel *suffixLabel;
-@property (nonatomic) BOOL suffixLabelPositionIsDirty;
 @end
 
 @implementation ZSWSuffixTextView {
-    CGRect _cachedPlaceholderFrame;
+    BOOL _suffixLabelPositionIsDirty;
+    BOOL _placeholderLabelPositionIsDirty;
 }
 
 @synthesize suffixTextColor = _suffixTextColor; // so we know if the user set it, or if we inherited
@@ -43,7 +43,8 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 }
 
 - (void)suffixTextViewCommonInit {
-    self.suffixLabelPositionIsDirty = YES;
+    _suffixLabelPositionIsDirty = YES;
+    _placeholderLabelPositionIsDirty = YES;
     
     self.suffixSpacing = 5.0;
     
@@ -107,74 +108,108 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     return CGRectInset(insetRect, self.textContainer.lineFragmentPadding, 0);
 }
 
+- (void)invalidateCaches {
+    [self invalidateCachesForStates:ZSWSuffixStatePlaceholder | ZSWSuffixStateSuffix];
+}
+
+- (void)invalidateCachesForStates:(ZSWSuffixState)states {
+    if (states & ZSWSuffixStatePlaceholder) {
+        _placeholderLabelPositionIsDirty = YES;
+        [self setNeedsLayout];
+    }
+    
+    if (states & ZSWSuffixStateSuffix || states & ZSWSuffixStatePlaceholder) {
+        _suffixLabelPositionIsDirty = YES;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)updatePlaceholderFrameIfNeeded {
+    if (!_placeholderLabelPositionIsDirty) {
+        return;
+    }
+    
+    UITextRange *range = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.beginningOfDocument];
+    
+    CGRect firstRect = [self firstRectForRange:range];
+    
+    CGFloat remainingWidth = CGRectGetMaxX(self.insetBounds) - CGRectGetMinX(firstRect);
+    
+    CGSize sizeThatFits = [self.placeholderLabel sizeThatFits:CGSizeMake(remainingWidth, CGFLOAT_MAX)];
+    // todo: why is it lying about this size?
+    sizeThatFits.width = MIN(sizeThatFits.width, remainingWidth);
+    
+    _placeholderLabelPositionIsDirty = NO;
+    self.placeholderLabel.frame = (CGRect){firstRect.origin, sizeThatFits};
+}
+
+- (void)updateSuffixLabelFrameIfNeeded {
+    if (!_suffixLabelPositionIsDirty) {
+        return;
+    }
+    
+    CGRect priorRect;
+    
+    if (self.suffixState & ZSWSuffixStatePlaceholder) {
+        priorRect = self.placeholderLabel.frame;
+    } else {
+        priorRect = CGRectOffset([self caretRectForPosition:self.endOfDocument], 0, 1);
+    }
+    
+    __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
+    
+    NSMutableParagraphStyle *paragraphStyle = [[self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange] mutableCopy];
+    
+    if (!paragraphStyle) {
+        paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    }
+    
+    // Get the indent inside our label's positioning, since the priorRect includes bounds insets
+    CGFloat indent = CGRectGetMaxX(priorRect) - CGRectGetMinX(self.insetBounds);
+    // Custom-provided spacing, too.
+    indent += self.suffixSpacing;
+    
+    if (indent >= CGRectGetWidth(self.insetBounds)) {
+        CGFloat lineHeight = self.suffixLabel.font.lineHeight;
+        lineHeight *= paragraphStyle.lineHeightMultiple ?: 1.0;
+        lineHeight = MIN(MAX(lineHeight, paragraphStyle.minimumLineHeight), paragraphStyle.maximumLineHeight ?: CGFLOAT_MAX);
+        
+        priorRect.origin.y += lineHeight + paragraphStyle.lineSpacing;
+        paragraphStyle.firstLineHeadIndent = 0;
+    } else {
+        paragraphStyle.firstLineHeadIndent = indent;
+    }
+    
+    NSMutableAttributedString *updatedString = [self.attributedSuffix mutableCopy];
+    [updatedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:effectiveRange];
+    self.suffixLabel.attributedText = updatedString;
+    
+    CGFloat width = CGRectGetWidth(self.insetBounds);
+    CGSize sizeThatFits = [self.suffixLabel sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    
+    _suffixLabelPositionIsDirty = NO;
+    self.suffixLabel.frame = CGRectMake(CGRectGetMinX(self.insetBounds), CGRectGetMinY(priorRect), width, sizeThatFits.height);
+    
+    self.contentSize = self.contentSize; // force an update
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    ZSWSuffixState state = self.visibleSuffixState;
+    ZSWSuffixState state = self.suffixState;
     
     if (state & ZSWSuffixStatePlaceholder) {
-        if (CGRectEqualToRect(_cachedPlaceholderFrame, CGRectZero)) {
-            UITextRange *range = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.beginningOfDocument];
-            
-            CGRect firstRect = [self firstRectForRange:range];
-
-            CGFloat remainingWidth = CGRectGetMaxX(self.insetBounds) - CGRectGetMinX(firstRect);
-            
-            CGSize sizeThatFits = [self.placeholderLabel sizeThatFits:CGSizeMake(remainingWidth, CGFLOAT_MAX)];
-            // todo: why is it lying about this size?
-            sizeThatFits.width = MIN(sizeThatFits.width, remainingWidth);
-            
-            self.placeholderLabel.frame = (CGRect){firstRect.origin, sizeThatFits};
-            _cachedPlaceholderFrame = self.placeholderLabel.frame;
-        } else {
-            self.placeholderLabel.frame = _cachedPlaceholderFrame;
-        }
+        [self updatePlaceholderFrameIfNeeded];
+        self.placeholderLabel.hidden = NO;
+    } else {
+        self.placeholderLabel.hidden = YES;
     }
     
-    if (state & ZSWSuffixStateSuffix && self.suffixLabelPositionIsDirty) {
-        CGRect priorRect;
-        
-        if (state & ZSWSuffixStatePlaceholder) {
-            priorRect = self.placeholderLabel.frame;
-        } else {
-            priorRect = CGRectOffset([self caretRectForPosition:self.endOfDocument], 0, 1);
-        }
-        
-        __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
-        
-        NSMutableParagraphStyle *paragraphStyle = [[self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange] mutableCopy];
-        
-        if (!paragraphStyle) {
-            paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        }
-        
-        // Get the indent inside our label's positioning, since the priorRect includes bounds insets
-        CGFloat indent = CGRectGetMaxX(priorRect) - CGRectGetMinX(self.insetBounds);
-        // Custom-provided spacing, too.
-        indent += self.suffixSpacing;
-        
-        if (indent >= CGRectGetWidth(self.insetBounds)) {
-            CGFloat lineHeight = self.suffixLabel.font.lineHeight;
-            lineHeight *= paragraphStyle.lineHeightMultiple ?: 1.0;
-            lineHeight = MIN(MAX(lineHeight, paragraphStyle.minimumLineHeight), paragraphStyle.maximumLineHeight ?: CGFLOAT_MAX);
-            
-            priorRect.origin.y += lineHeight + paragraphStyle.lineSpacing;
-            paragraphStyle.firstLineHeadIndent = 0;
-        } else {
-            paragraphStyle.firstLineHeadIndent = indent;
-        }
-        
-        NSMutableAttributedString *updatedString = [self.attributedSuffix mutableCopy];
-        [updatedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:effectiveRange];
-        self.suffixLabel.attributedText = updatedString;
-    
-        CGFloat width = CGRectGetWidth(self.insetBounds);
-        CGSize sizeThatFits = [self.suffixLabel sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-        
-        self.suffixLabel.frame = CGRectMake(CGRectGetMinX(self.insetBounds), CGRectGetMinY(priorRect), width, sizeThatFits.height);
-        
-        self.contentSize = self.contentSize; // force an update
-        self.suffixLabelPositionIsDirty = NO;
+    if (state & ZSWSuffixStateSuffix) {
+        [self updateSuffixLabelFrameIfNeeded];
+        self.suffixLabel.hidden = NO;
+    } else {
+        self.suffixLabel.hidden = YES;
     }
 }
 
@@ -182,24 +217,18 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     ZSWSuffixState suffixState = self.suffixState;
     ZSWSuffixState visibleState = self.visibleSuffixState;
 
-    if (suffixState != ZSWSuffixStateNone) {
-        self.suffixLabelPositionIsDirty = YES;
-    }
-    
     if (suffixState != visibleState) {
-        self.placeholderLabel.hidden = !(suffixState & ZSWSuffixStatePlaceholder);
-        self.suffixLabel.hidden = !(suffixState & ZSWSuffixStateSuffix);
-        [self setNeedsLayout];
+        [self invalidateCachesForStates:suffixState - visibleState];
     } else if (suffixState & ZSWSuffixStateSuffix) {
-        // Always layout when we have a suffix set, because its position changes
-        [self setNeedsLayout];
+        // Any text change means we need to update the suffix string.
+        [self invalidateCachesForStates:ZSWSuffixStateSuffix];
     }
 }
 
 #pragma mark -
 
 - (void)setContentSize:(CGSize)contentSize {
-    ZSWSuffixState visibleState = self.visibleSuffixState;
+    ZSWSuffixState visibleState = self.suffixState;
     
     if (visibleState & ZSWSuffixStateSuffix) {
         CGSize updatedSize = contentSize;
@@ -220,8 +249,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setPlaceholder:(NSString *)placeholder {
     self.placeholderLabel.text = placeholder;
-    _cachedPlaceholderFrame = CGRectZero;
-    [self setNeedsLayout];
+    [self invalidateCachesForStates:ZSWSuffixStatePlaceholder];
 }
 
 - (UIColor *)placeholderTextColor {
@@ -238,12 +266,12 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setSuffix:(NSString *)suffix {
     self.suffixLabel.text = suffix;
-    [self textViewDidChange_ZSW];
+    [self invalidateCachesForStates:ZSWSuffixStateSuffix];
 }
 
 - (void)setSuffixSpacing:(CGFloat)suffixSpacing {
     _suffixSpacing = suffixSpacing;
-    [self textViewDidChange_ZSW];
+    [self invalidateCachesForStates:ZSWSuffixStateSuffix];
 }
 
 - (NSAttributedString *)attributedSuffix {
@@ -252,7 +280,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setAttributedSuffix:(NSAttributedString *)attributedSuffix {
     self.suffixLabel.attributedText = attributedSuffix;
-    [self textViewDidChange_ZSW];
+    [self invalidateCachesForStates:ZSWSuffixStateSuffix];
 }
 
 - (UIColor *)suffixTextColor {
@@ -266,14 +294,16 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setFont:(UIFont *)font {
     [super setFont:font];
+    
     self.placeholderLabel.font = font;
     self.suffixLabel.font = font;
-    [self textViewDidChange_ZSW];
+    
+    [self invalidateCaches];
 }
 
 - (void)setText:(NSString *)text {
     [super setText:text];
-    [self textViewDidChange_ZSW];
+    [self invalidateCaches];
 }
 
 - (void)setTextColor:(UIColor *)textColor {
@@ -294,7 +324,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         self.suffixLabel.textColor = self.textColor;
     }
     
-    [self textViewDidChange_ZSW];
+    [self invalidateCaches];
 }
 
 @end
