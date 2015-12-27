@@ -181,13 +181,16 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 - (void)textViewDidChange_ZSW {
     ZSWSuffixState suffixState = self.suffixState;
     ZSWSuffixState visibleState = self.visibleSuffixState;
+
+    if (suffixState != ZSWSuffixStateNone) {
+        self.suffixLabelPositionIsDirty = YES;
+    }
     
     if (suffixState != visibleState) {
         self.placeholderLabel.hidden = !(suffixState & ZSWSuffixStatePlaceholder);
         self.suffixLabel.hidden = !(suffixState & ZSWSuffixStateSuffix);
         [self setNeedsLayout];
     } else if (suffixState & ZSWSuffixStateSuffix) {
-        self.suffixLabelPositionIsDirty = YES;
         // Always layout when we have a suffix set, because its position changes
         [self setNeedsLayout];
     }
