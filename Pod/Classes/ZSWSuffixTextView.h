@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 IB_DESIGNABLE
 @interface ZSWSuffixTextView : UITextView
 
-@property (null_resettable, nonatomic) IBInspectable UIFont *placeholderFont;
 @property (null_resettable, nonatomic) IBInspectable UIColor *placeholderTextColor;
 
 @property (nullable, nonatomic) IBInspectable NSString *placeholder;

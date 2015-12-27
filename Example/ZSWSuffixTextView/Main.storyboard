@@ -18,14 +18,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="fsdjfjsdf" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
                                 <rect key="frame" x="20" y="28" width="560" height="564"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Test"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="I am suffix text"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Test indeed, my good sir"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="I am suffix text which has the proud honor of wrapping to multiple lines"/>
                                 </userDefinedRuntimeAttributes>
                             </textView>
                         </subviews>
