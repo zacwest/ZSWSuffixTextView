@@ -47,6 +47,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     }
     
     self.suffixLabel = [[labelClass alloc] init];
+    self.suffixLabel.numberOfLines = 0;
     [self addSubview:self.suffixLabel];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -96,17 +97,17 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     if (state & ZSWSuffixStatePlaceholder) {
         CGRect caretRect = [self caretRectForPosition:self.beginningOfDocument];
         CGFloat remainingWidth = CGRectGetMaxX(self.bounds) - CGRectGetMinX(caretRect) - self.textContainerInset.right;
-        CGSize sizeThatFits = [self.placeholderLabel sizeThatFits:CGSizeMake(remainingWidth, CGFLOAT_MAX)];
-        self.placeholderLabel.frame = (CGRect){caretRect.origin, sizeThatFits};
+        self.placeholderLabel.frame = (CGRect){caretRect.origin, CGSizeMake(remainingWidth, self.placeholderLabel.font.lineHeight)};
     }
     
     if (state & ZSWSuffixStateSuffix) {
-        CGRect caretRect;
+        CGRect priorRect;
         
         if (state & ZSWSuffixStatePlaceholder) {
-            caretRect = self.placeholderLabel.frame;
+            CGSize desiredSize = [self.placeholderLabel sizeThatFits:self.placeholderLabel.bounds.size];
+            priorRect = (CGRect){self.placeholderLabel.frame.origin, desiredSize};
         } else {
-            caretRect = [self caretRectForPosition:self.endOfDocument];
+            priorRect = [self caretRectForPosition:self.endOfDocument];
         }
 
         __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
@@ -121,7 +122,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
             return [existingStyle mutableCopy];
         }();
         
-        paragraphStyle.firstLineHeadIndent = CGRectGetMaxX(caretRect) - self.textContainerInset.left;
+        paragraphStyle.firstLineHeadIndent = CGRectGetMaxX(priorRect) - self.textContainerInset.left;
         
         NSMutableAttributedString *updatedString = [self.attributedSuffix mutableCopy];
         [updatedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:effectiveRange];
@@ -130,7 +131,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         CGFloat width = CGRectGetWidth(UIEdgeInsetsInsetRect(self.bounds, self.textContainerInset));
         CGSize sizeThatFits = [self.suffixLabel sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
         
-        self.suffixLabel.frame = CGRectMake(self.textContainerInset.left, CGRectGetMinY(caretRect), width, sizeThatFits.height);
+        self.suffixLabel.frame = CGRectMake(self.textContainerInset.left, CGRectGetMinY(priorRect), width, sizeThatFits.height);
     }
 }
 

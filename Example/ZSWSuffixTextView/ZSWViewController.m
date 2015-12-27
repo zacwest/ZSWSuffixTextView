@@ -21,7 +21,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    self.suffixTextView.placeholder = @"Hello";
+    self.suffixTextView.placeholder = @"Hello I am a very long placeholder label that wraps";
 }
 
 - (void)didReceiveMemoryWarning
