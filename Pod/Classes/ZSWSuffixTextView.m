@@ -28,6 +28,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 @implementation ZSWSuffixTextView {
     BOOL _suffixLabelPositionIsDirty;
+    BOOL _placeholderLabelPositionIsDirty;
 }
 
 @synthesize suffixTextColor = _suffixTextColor; // so we know if the user set it, or if we inherited
@@ -49,8 +50,6 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 }
 
 - (void)suffixTextViewCommonInit {
-    _suffixLabelPositionIsDirty = YES;
-    
     self.suffixSpacing = 5.0;
     
     self.placeholderLabel = [[UILabel alloc] init];
@@ -105,7 +104,8 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
                                              selector:@selector(textViewDidChange_ZSW)
                                                  name:UITextViewTextDidChangeNotification
                                                object:self];
-    [self textViewDidChange_ZSW];
+
+    [self invalidateCaches];
 }
 
 - (void)dealloc {
@@ -147,15 +147,22 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)invalidateCaches {
     _suffixLabelPositionIsDirty = YES;
-    [self setNeedsLayout];
+    _placeholderLabelPositionIsDirty = YES;
+    [self setNeedsUpdateConstraints];
 }
 
-- (void)updatePlaceholderFrameIfNeeded {
+- (void)updatePlaceholderConstraintsIfNeeded {
+    if (!_placeholderLabelPositionIsDirty) {
+        return;
+    }
+    
     UITextRange *range = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.beginningOfDocument];
     CGRect firstRect = [self firstRectForRange:range];
     
     self.placeholderLeading.constant = CGRectGetMinX(firstRect);
     self.placeholderTop.constant = CGRectGetMinY(firstRect);
+    
+    _placeholderLabelPositionIsDirty = NO;
 }
 
 - (NSAttributedString *)updatedSuffixStringForPriorRect:(CGRect *)priorRect {
@@ -189,7 +196,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     return updatedString;
 }
 
-- (void)updateSuffixLabelFrameIfNeeded {
+- (void)updateSuffixLabelConstraintsIfNeeded {
     if (!_suffixLabelPositionIsDirty) {
         return;
     }
@@ -204,45 +211,49 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     
     self.suffixLabel.attributedText = [self updatedSuffixStringForPriorRect:&priorRect];
     
-    _suffixLabelPositionIsDirty = NO;
-    
     CGRect insetBounds = self.insetBounds;
     self.suffixTop.constant = CGRectGetMinY(priorRect);
     self.suffixLeading.constant = CGRectGetMinX(insetBounds);
     self.suffixWidth.constant = CGRectGetWidth(insetBounds);
     
-    [self layoutIfNeeded];
+    _suffixLabelPositionIsDirty = NO;
+}
+
+- (void)updateConstraints {
+    ZSWSuffixState state = self.suffixState;
     
-    self.contentSize = self.contentSize; // force an update
+    self.placeholderLabel.hidden = !(state & ZSWSuffixStatePlaceholder);
+    self.suffixLabel.hidden = !(state & ZSWSuffixStateSuffix);
+    
+    [self updatePlaceholderConstraintsIfNeeded];
+    [self updateSuffixLabelConstraintsIfNeeded];
+    
+    [super updateConstraints];
 }
 
 - (void)layoutSubviews {
-    CGRect startPlaceholderFrame = self.placeholderLabel.frame;
-    [super layoutSubviews];
-    CGRect endPlaceholderFrame = self.placeholderLabel.frame;
+    struct {
+        CGRect start;
+        CGRect end;
+        BOOL changed;
+    } placeholder, suffix;
     
-    if (!CGRectEqualToRect(startPlaceholderFrame, endPlaceholderFrame)) {
+    placeholder.start = self.placeholderLabel.frame;
+    suffix.start = self.suffixLabel.frame;
+    [super layoutSubviews];
+    placeholder.end = self.placeholderLabel.frame;
+    suffix.end = self.suffixLabel.frame;
+    
+    placeholder.changed = !CGRectEqualToRect(placeholder.start, placeholder.end);
+    suffix.changed = !CGRectEqualToRect(suffix.start, suffix.end);
+    
+    if (placeholder.changed) {
+        // Rare case, so don't bother trying to make this faster. It'll just take another pass.
         [self invalidateCaches];
     }
     
-    ZSWSuffixState state = self.suffixState;
-    
-    if (state & ZSWSuffixStatePlaceholder) {
-        [self updatePlaceholderFrameIfNeeded];
-        
-        if (self.placeholderLabel.isHidden) {
-            self.placeholderLabel.hidden = NO;
-            [self layoutIfNeeded]; // so the autolayout frame is correct
-        }
-    } else if (!self.placeholderLabel.isHidden) {
-        self.placeholderLabel.hidden = YES;
-    }
-    
-    if (state & ZSWSuffixStateSuffix) {
-        [self updateSuffixLabelFrameIfNeeded];
-        self.suffixLabel.hidden = NO;
-    } else {
-        self.suffixLabel.hidden = YES;
+    if (suffix.changed) {
+        self.contentSize = self.contentSize; // force update
     }
 }
 
