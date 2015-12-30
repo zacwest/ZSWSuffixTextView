@@ -134,11 +134,6 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     return state;
 }
 
-- (CGRect)insetBounds {
-    CGRect insetRect = UIEdgeInsetsInsetRect(UIEdgeInsetsInsetRect(self.bounds, self.textContainerInset), self.contentInset);
-    return CGRectInset(insetRect, self.textContainer.lineFragmentPadding, 0);
-}
-
 - (void)updatePlaceholderConstraints {
     UITextRange *range = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.beginningOfDocument];
     CGRect firstRect = [self firstRectForRange:range];
@@ -147,7 +142,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.placeholderTop.constant = CGRectGetMinY(firstRect);
 }
 
-- (NSAttributedString *)updatedSuffixStringForPriorRect:(CGRect *)priorRect {
+- (NSAttributedString *)suffixStringAfterUpdatingPriorRect:(inout CGRect *)priorRect {
     __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
     
     NSMutableParagraphStyle *paragraphStyle = [[self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange] mutableCopy];
@@ -157,12 +152,11 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     }
     
     // Get the indent inside our label's positioning, since the priorRect includes bounds insets
-    CGRect insetBounds = self.insetBounds;
-    CGFloat indent = CGRectGetMaxX(*priorRect) - CGRectGetMinX(insetBounds);
+    CGFloat indent = CGRectGetMaxX(*priorRect) - self.suffixLeading.constant;
     // Custom-provided spacing, too.
     indent += self.suffixSpacing;
     
-    if (indent >= CGRectGetWidth(insetBounds)) {
+    if (indent >= self.suffixWidth.constant) {
         CGFloat lineHeight = self.suffixLabel.font.lineHeight;
         lineHeight *= paragraphStyle.lineHeightMultiple ?: 1.0;
         lineHeight = MIN(MAX(lineHeight, paragraphStyle.minimumLineHeight), paragraphStyle.maximumLineHeight ?: CGFLOAT_MAX);
@@ -187,12 +181,16 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         priorRect = CGRectOffset([self caretRectForPosition:self.endOfDocument], 0, 1);
     }
     
-    self.suffixLabel.attributedText = [self updatedSuffixStringForPriorRect:&priorRect];
+    CGRect insetBounds = ^{
+        CGRect insetRect = UIEdgeInsetsInsetRect(UIEdgeInsetsInsetRect(self.bounds, self.textContainerInset), self.contentInset);
+        return CGRectInset(insetRect, self.textContainer.lineFragmentPadding, 0);
+    }();
     
-    CGRect insetBounds = self.insetBounds;
-    self.suffixTop.constant = CGRectGetMinY(priorRect);
     self.suffixLeading.constant = CGRectGetMinX(insetBounds);
     self.suffixWidth.constant = CGRectGetWidth(insetBounds);
+    
+    self.suffixLabel.attributedText = [self suffixStringAfterUpdatingPriorRect:&priorRect];
+    self.suffixTop.constant = CGRectGetMinY(priorRect);
 }
 
 - (void)updateConstraints {
