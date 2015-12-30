@@ -26,11 +26,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 @property (nonatomic) NSLayoutConstraint *suffixWidth;
 @end
 
-@implementation ZSWSuffixTextView {
-    BOOL _suffixLabelPositionIsDirty;
-    BOOL _placeholderLabelPositionIsDirty;
-}
-
+@implementation ZSWSuffixTextView
 @synthesize suffixTextColor = _suffixTextColor; // so we know if the user set it, or if we inherited
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -104,8 +100,6 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
                                              selector:@selector(textViewDidChange_ZSW)
                                                  name:UITextViewTextDidChangeNotification
                                                object:self];
-
-    [self invalidateCaches];
 }
 
 - (void)dealloc {
@@ -145,24 +139,12 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     return CGRectInset(insetRect, self.textContainer.lineFragmentPadding, 0);
 }
 
-- (void)invalidateCaches {
-    _suffixLabelPositionIsDirty = YES;
-    _placeholderLabelPositionIsDirty = YES;
-    [self setNeedsUpdateConstraints];
-}
-
-- (void)updatePlaceholderConstraintsIfNeeded {
-    if (!_placeholderLabelPositionIsDirty) {
-        return;
-    }
-    
+- (void)updatePlaceholderConstraints {
     UITextRange *range = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.beginningOfDocument];
     CGRect firstRect = [self firstRectForRange:range];
     
     self.placeholderLeading.constant = CGRectGetMinX(firstRect);
     self.placeholderTop.constant = CGRectGetMinY(firstRect);
-    
-    _placeholderLabelPositionIsDirty = NO;
 }
 
 - (NSAttributedString *)updatedSuffixStringForPriorRect:(CGRect *)priorRect {
@@ -196,11 +178,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     return updatedString;
 }
 
-- (void)updateSuffixLabelConstraintsIfNeeded {
-    if (!_suffixLabelPositionIsDirty) {
-        return;
-    }
-    
+- (void)updateSuffixLabelConstraints {
     CGRect priorRect;
     
     if (self.suffixState & ZSWSuffixStatePlaceholder) {
@@ -215,8 +193,6 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.suffixTop.constant = CGRectGetMinY(priorRect);
     self.suffixLeading.constant = CGRectGetMinX(insetBounds);
     self.suffixWidth.constant = CGRectGetWidth(insetBounds);
-    
-    _suffixLabelPositionIsDirty = NO;
 }
 
 - (void)updateConstraints {
@@ -225,8 +201,8 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.placeholderLabel.hidden = !(state & ZSWSuffixStatePlaceholder);
     self.suffixLabel.hidden = !(state & ZSWSuffixStateSuffix);
     
-    [self updatePlaceholderConstraintsIfNeeded];
-    [self updateSuffixLabelConstraintsIfNeeded];
+    [self updatePlaceholderConstraints];
+    [self updateSuffixLabelConstraints];
     
     [super updateConstraints];
 }
@@ -249,7 +225,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     
     if (placeholder.changed) {
         // Rare case, so don't bother trying to make this faster. It'll just take another pass.
-        [self invalidateCaches];
+        [self setNeedsUpdateConstraints];
     }
     
     if (suffix.changed) {
@@ -262,10 +238,10 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     ZSWSuffixState visibleState = self.visibleSuffixState;
 
     if (suffixState != visibleState) {
-        [self invalidateCaches];
+        [self setNeedsUpdateConstraints];
     } else if (suffixState & ZSWSuffixStateSuffix) {
         // Any text change means we need to update the suffix string.
-        [self invalidateCaches];
+        [self setNeedsUpdateConstraints];
     }
 }
 
@@ -309,12 +285,12 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setSuffix:(NSString *)suffix {
     self.suffixLabel.text = suffix;
-    [self invalidateCaches];
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)setSuffixSpacing:(CGFloat)suffixSpacing {
     _suffixSpacing = suffixSpacing;
-    [self invalidateCaches];
+    [self setNeedsUpdateConstraints];
 }
 
 - (NSAttributedString *)attributedSuffix {
@@ -323,7 +299,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setAttributedSuffix:(NSAttributedString *)attributedSuffix {
     self.suffixLabel.attributedText = attributedSuffix;
-    [self invalidateCaches];
+    [self setNeedsUpdateConstraints];
 }
 
 - (UIColor *)suffixTextColor {
@@ -341,12 +317,12 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.placeholderLabel.font = font;
     self.suffixLabel.font = font;
     
-    [self invalidateCaches];
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)setText:(NSString *)text {
     [super setText:text];
-    [self invalidateCaches];
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)setTextColor:(UIColor *)textColor {
@@ -367,7 +343,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         self.suffixLabel.textColor = self.textColor;
     }
     
-    [self invalidateCaches];
+    [self setNeedsUpdateConstraints];
 }
 
 @end
