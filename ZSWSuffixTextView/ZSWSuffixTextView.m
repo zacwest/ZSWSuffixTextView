@@ -51,7 +51,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.placeholderLabel = [[UILabel alloc] init];
     self.placeholderLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.placeholderLabel.font = self.font;
-    self.placeholderTextColor = [UIColor colorWithWhite:0.70 alpha:1.0];
+    self.placeholderTextColor = nil;
     [self addSubview:self.placeholderLabel];
     
     Class labelClass = NSClassFromString(@"ZSWTappableLabel");
@@ -139,7 +139,9 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     CGRect firstRect = [self firstRectForRange:range];
     
     // Sometimes -firstRectForRange: (especially in IB) returns inf for x,y
-    // This doesn't seem to be documented anywhere.
+    // This doesn't seem to be documented anywhere but it's probably because
+    // we're setting up the constraints before the layout manager has a chance
+    // to do any kind of layout, when running in IB.
     
     if (isinf(firstRect.origin.x) || isinf(firstRect.origin.y)) {
         return;
@@ -252,21 +254,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 #pragma mark -
 
-- (void)setContentSize:(CGSize)contentSize {
-    ZSWSuffixState visibleState = self.suffixState;
-    
-    if (visibleState & ZSWSuffixStateSuffix) {
-        CGSize updatedSize = contentSize;
-        updatedSize.height = CGRectGetMaxY(self.suffixLabel.frame);
-        if (!CGSizeEqualToSize(self.contentSize, updatedSize)) {
-            [super setContentSize:updatedSize];
-        }
-    } else {
-        [super setContentSize:contentSize];
-    }
-}
-
-#pragma mark - Wrappers
+#pragma mark Placeholder
 
 - (NSString *)placeholder {
     return self.placeholderLabel.text;
@@ -281,8 +269,10 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 }
 
 - (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor {
-    self.placeholderLabel.textColor = placeholderTextColor;
+    self.placeholderLabel.textColor = placeholderTextColor ?: [UIColor colorWithWhite:0.70 alpha:1.0];
 }
+
+#pragma mark Suffix
 
 - (NSString *)suffix {
     return self.suffixLabel.text;
@@ -313,7 +303,23 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 
 - (void)setSuffixTextColor:(UIColor *)suffixTextColor {
     _suffixTextColor = suffixTextColor;
-    self.suffixLabel.textColor = suffixTextColor;
+    self.suffixLabel.textColor = suffixTextColor ?: self.textColor;
+}
+
+#pragma mark - Overrides
+
+- (void)setContentSize:(CGSize)contentSize {
+    ZSWSuffixState visibleState = self.suffixState;
+    
+    if (visibleState & ZSWSuffixStateSuffix) {
+        CGSize updatedSize = contentSize;
+        updatedSize.height = CGRectGetMaxY(self.suffixLabel.frame);
+        if (!CGSizeEqualToSize(self.contentSize, updatedSize)) {
+            [super setContentSize:updatedSize];
+        }
+    } else {
+        [super setContentSize:contentSize];
+    }
 }
 
 - (void)setFont:(UIFont *)font {
