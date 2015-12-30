@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/ZSWSuffixTextView.h
+../../../../../ZSWSuffixTextView/ZSWSuffixTextView.h

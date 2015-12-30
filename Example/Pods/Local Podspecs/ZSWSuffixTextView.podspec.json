@@ -1,25 +1,21 @@
 {
   "name": "ZSWSuffixTextView",
-  "version": "0.1.0",
-  "summary": "A short description of ZSWSuffixTextView.",
-  "description": "",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/ZSWSuffixTextView",
+  "version": "1.0",
+  "summary": "UITextView subclass which displays a suffix after editable text",
+  "description": "ZSWSuffixTextView allows you to set a suffix string, or non-editable text to be\nappended after the editable text inside the text view.\nRead more: https://github.com/zacwest/ZSWSuffixTextView",
+  "homepage": "https://github.com/zacwest/ZSWSuffixTextView",
   "license": "MIT",
   "authors": {
     "Zachary West": "zacwest@gmail.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/ZSWSuffixTextView.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/zacwest/ZSWSuffixTextView.git",
+    "tag": "1.0"
   },
+  "social_media_url": "https://twitter.com/zacwest",
   "platforms": {
-    "ios": "7.0"
+    "ios": "8.0"
   },
   "requires_arc": true,
-  "source_files": "Pod/Classes/**/*",
-  "resource_bundles": {
-    "ZSWSuffixTextView": [
-      "Pod/Assets/*.png"
-    ]
-  }
+  "source_files": "ZSWSuffixTextView/**/*"
 }
