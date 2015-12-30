@@ -520,6 +520,7 @@
 				GCC_PREFIX_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView-Prefix.pch";
 				INFOPLIST_FILE = "ZSWSuffixTextView/ZSWSuffixTextView-Info.plist";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -534,6 +535,7 @@
 				GCC_PREFIX_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView-Prefix.pch";
 				INFOPLIST_FILE = "ZSWSuffixTextView/ZSWSuffixTextView-Info.plist";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -556,6 +558,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZSWSuffixTextView_Example.app/ZSWSuffixTextView_Example";
 				WRAPPER_EXTENSION = xctest;
@@ -575,6 +578,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZSWSuffixTextView_Example.app/ZSWSuffixTextView_Example";
 				WRAPPER_EXTENSION = xctest;
