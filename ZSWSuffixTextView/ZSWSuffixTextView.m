@@ -138,6 +138,13 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     UITextRange *range = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.beginningOfDocument];
     CGRect firstRect = [self firstRectForRange:range];
     
+    // Sometimes -firstRectForRange: (especially in IB) returns inf for x,y
+    // This doesn't seem to be documented anywhere.
+    
+    if (isinf(firstRect.origin.x) || isinf(firstRect.origin.y)) {
+        return;
+    }
+    
     self.placeholderLeading.constant = CGRectGetMinX(firstRect);
     self.placeholderTop.constant = CGRectGetMinY(firstRect);
 }
