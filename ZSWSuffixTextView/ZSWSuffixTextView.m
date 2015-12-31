@@ -28,7 +28,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 @property (nonatomic) NSLayoutConstraint *placeholderRight;
 
 @property (nonatomic) NSLayoutConstraint *suffixTop;
-@property (nonatomic) NSLayoutConstraint *suffixLeading;
+@property (nonatomic) NSLayoutConstraint *suffixLeft;
 @property (nonatomic) NSLayoutConstraint *suffixWidth;
 @end
 
@@ -103,7 +103,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         return constraint;
     }();
     
-    self.suffixLeading = ^{
+    self.suffixLeft = ^{
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.suffixLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
         [self addConstraint:constraint];
         return constraint;
@@ -224,7 +224,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     // RTL text, the label text we've been provided is LTR, which would cause overlapping
     paragraphStyle.baseWritingDirection = isRTL ? NSWritingDirectionRightToLeft : NSWritingDirectionLeftToRight;
     
-    CGFloat indent = -self.suffixLeading.constant;
+    CGFloat indent = -self.suffixLeft.constant;
     
     if (isRTL) {
         indent += CGRectGetWidth(self.bounds) - CGRectGetMinX(*priorRect);
@@ -271,7 +271,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     CGRect originlessBounds = (CGRect){CGPointZero, self.bounds.size};
     CGRect insetBounds = UIEdgeInsetsInsetRect(originlessBounds, self.completeEdgeInsets);
     
-    self.suffixLeading.constant = CGRectGetMinX(insetBounds);
+    self.suffixLeft.constant = CGRectGetMinX(insetBounds);
     self.suffixWidth.constant = -(CGRectGetMaxX(originlessBounds) - CGRectGetMaxX(insetBounds) + CGRectGetMinX(insetBounds));
     
     self.suffixLabel.attributedText = [self suffixStringAfterUpdatingPriorRect:&priorRect isRTL:isRTL];
