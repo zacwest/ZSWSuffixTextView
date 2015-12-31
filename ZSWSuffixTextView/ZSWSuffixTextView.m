@@ -221,6 +221,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     }
     
     paragraphStyle.alignment = isRTL ? NSTextAlignmentRight : NSTextAlignmentLeft;
+    paragraphStyle.baseWritingDirection = isRTL ? NSWritingDirectionRightToLeft : NSWritingDirectionLeftToRight;
     
     CGFloat indent = -self.suffixLeading.constant;
     
@@ -232,7 +233,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     
     indent += self.suffixSpacing;
     
-    if (indent >= CGRectGetWidth(self.suffixLabel.bounds) || isRTL) {
+    if (indent >= CGRectGetWidth(self.suffixLabel.bounds)) {
         CGFloat lineHeight = self.suffixLabel.font.lineHeight;
         lineHeight *= paragraphStyle.lineHeightMultiple ?: 1.0;
         lineHeight = MIN(MAX(lineHeight, paragraphStyle.minimumLineHeight), paragraphStyle.maximumLineHeight ?: CGFLOAT_MAX);
