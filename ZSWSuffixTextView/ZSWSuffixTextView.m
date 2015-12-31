@@ -220,7 +220,6 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     }
     
-    paragraphStyle.alignment = isRTL ? NSTextAlignmentRight : NSTextAlignmentLeft;
     paragraphStyle.baseWritingDirection = isRTL ? NSWritingDirectionRightToLeft : NSWritingDirectionLeftToRight;
     
     CGFloat indent = -self.suffixLeading.constant;
