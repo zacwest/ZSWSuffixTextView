@@ -81,6 +81,14 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.suffixLabel.textColor = self.textColor;
     [self addSubview:self.suffixLabel];
     
+    // we use placeholder sized to fit because we want to know when its text changes
+    // e.g. if the user changes the placeholder text after initially setting it,
+    // so if we set it to fit the whole width we'd have to inspect changes and
+    // blah blah. easier to just let autolayout do the guessing.
+    
+    // we need the container anyway to constrain the suffix width to match, because
+    // autolayout is annoying with scrollviews.
+    
     self.placeholderTop = ^{
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.placeholderLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.containerForPlaceholder attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
         [self addConstraint:constraint];
