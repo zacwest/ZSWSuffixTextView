@@ -220,6 +220,8 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     }
     
+    // We have to force baseWritingDirection because although the user may be entering
+    // RTL text, the label text we've been provided is LTR, which would cause overlapping
     paragraphStyle.baseWritingDirection = isRTL ? NSWritingDirectionRightToLeft : NSWritingDirectionLeftToRight;
     
     CGFloat indent = -self.suffixLeading.constant;
