@@ -58,7 +58,9 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.containerForPlaceholder.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.containerForPlaceholder.userInteractionEnabled = NO;
     [self addSubview:self.containerForPlaceholder];
-    
+     
+    // We create a width-appropriate frame because at least our width needs to be
+    // correct for the first pass when we generate the head indent on the label
     CGRect widthAppropriateFrame = CGRectMake(0, 0, CGRectGetWidth(UIEdgeInsetsInsetRect(self.bounds, self.completeEdgeInsets)), 0);
     
     self.placeholderLabel = [[UILabel alloc] initWithFrame:widthAppropriateFrame];
