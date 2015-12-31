@@ -18,8 +18,14 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 @property (nonatomic) UILabel *placeholderLabel;
 @property (nonatomic) UILabel *suffixLabel;
 
+// placeholder label wants to be pinned to right _or_ left,
+// but not all (so we don't have to modify its text alignment)
+// which requires a superview that has left/right/top/bottom scroll view
+// constraints, see https://developer.apple.com/library/ios/technotes/tn2154/_index.html
+@property (nonatomic) UIView *containerForPlaceholder;
 @property (nonatomic) NSLayoutConstraint *placeholderTop;
-@property (nonatomic) NSLayoutConstraint *placeholderLeading;
+@property (nonatomic) NSLayoutConstraint *placeholderLeft;
+@property (nonatomic) NSLayoutConstraint *placeholderRight;
 
 @property (nonatomic) NSLayoutConstraint *suffixTop;
 @property (nonatomic) NSLayoutConstraint *suffixLeading;
@@ -48,18 +54,25 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 - (void)suffixTextViewCommonInit {
     self.suffixSpacing = 5.0;
     
-    self.placeholderLabel = [[UILabel alloc] init];
+    self.containerForPlaceholder = [[UIView alloc] initWithFrame:self.bounds];
+    self.containerForPlaceholder.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.containerForPlaceholder.userInteractionEnabled = NO;
+    [self addSubview:self.containerForPlaceholder];
+    
+    CGRect widthAppropriateFrame = CGRectMake(0, 0, CGRectGetWidth(UIEdgeInsetsInsetRect(self.bounds, self.completeEdgeInsets)), 0);
+    
+    self.placeholderLabel = [[UILabel alloc] initWithFrame:widthAppropriateFrame];
     self.placeholderLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.placeholderLabel.font = self.font;
     self.placeholderTextColor = nil;
-    [self addSubview:self.placeholderLabel];
+    [self.containerForPlaceholder addSubview:self.placeholderLabel];
     
     Class labelClass = NSClassFromString(@"ZSWTappableLabel");
     if (!labelClass) {
         labelClass = [UILabel class];
     }
     
-    self.suffixLabel = [[labelClass alloc] init];
+    self.suffixLabel = [[labelClass alloc] initWithFrame:widthAppropriateFrame];
     self.suffixLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.suffixLabel.numberOfLines = 0;
     self.suffixLabel.font = self.font;
@@ -67,13 +80,19 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     [self addSubview:self.suffixLabel];
     
     self.placeholderTop = ^{
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.placeholderLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.placeholderLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.containerForPlaceholder attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
         [self addConstraint:constraint];
         return constraint;
     }();
     
-    self.placeholderLeading = ^{
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.placeholderLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0];
+    self.placeholderLeft = ^{
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.placeholderLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.containerForPlaceholder attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+        [self addConstraint:constraint];
+        return constraint;
+    }();
+    
+    self.placeholderRight = ^{
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.placeholderLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.containerForPlaceholder attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
         [self addConstraint:constraint];
         return constraint;
     }();
@@ -91,7 +110,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     }();
     
     self.suffixWidth = ^{
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.suffixLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.suffixLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.containerForPlaceholder attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
         [self addConstraint:constraint];
         return constraint;
     }();
@@ -100,6 +119,10 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
                                              selector:@selector(textViewDidChange_ZSW)
                                                  name:UITextViewTextDidChangeNotification
                                                object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textViewDidChangeInputMode_ZSW)
+                                                 name:UITextInputCurrentInputModeDidChangeNotification
+                                               object:nil];
 }
 
 - (void)dealloc {
@@ -134,24 +157,61 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     return state;
 }
 
-- (void)updatePlaceholderConstraints {
-    UITextRange *range = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.beginningOfDocument];
-    CGRect firstRect = [self firstRectForRange:range];
+- (BOOL)isEffectivelyRightToLeftAtTextPosition:(UITextPosition *)textPosition {
+    BOOL isViewRTL = ^{
+        switch ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute]) {
+            case UIUserInterfaceLayoutDirectionLeftToRight:
+                return NO;
+            case UIUserInterfaceLayoutDirectionRightToLeft:
+                return YES;
+        }
+    }();
     
-    // Sometimes -firstRectForRange: (especially in IB) returns inf for x,y
-    // This doesn't seem to be documented anywhere but it's probably because
-    // we're setting up the constraints before the layout manager has a chance
-    // to do any kind of layout, when running in IB.
+    BOOL isWritingRTL = ^{
+        switch ([self baseWritingDirectionForPosition:textPosition inDirection:UITextStorageDirectionForward]) {
+            case UITextWritingDirectionNatural:
+                return isViewRTL;
+            case UITextWritingDirectionLeftToRight:
+                return NO;
+            case UITextWritingDirectionRightToLeft:
+                return YES;
+        }
+    }();
     
-    if (isinf(firstRect.origin.x) || isinf(firstRect.origin.y)) {
-        return;
-    }
-    
-    self.placeholderLeading.constant = CGRectGetMinX(firstRect);
-    self.placeholderTop.constant = CGRectGetMinY(firstRect);
+    return isWritingRTL;
 }
 
-- (NSAttributedString *)suffixStringAfterUpdatingPriorRect:(inout CGRect *)priorRect {
+- (UIEdgeInsets)completeEdgeInsets {
+    CGFloat lineFragmentPadding = self.textContainer.lineFragmentPadding;
+    
+    UIEdgeInsets contentInset = self.contentInset;
+    
+    UIEdgeInsets insets = self.textContainerInset;
+    insets.left += lineFragmentPadding + contentInset.left;
+    insets.right += lineFragmentPadding + contentInset.right;
+    insets.top += contentInset.top;
+    insets.bottom += contentInset.bottom;
+    
+    return insets;
+}
+
+- (void)updatePlaceholderConstraints {
+    BOOL isRTL = [self isEffectivelyRightToLeftAtTextPosition:self.beginningOfDocument];
+    self.placeholderRight.active = isRTL;
+    self.placeholderLeft.active = !isRTL;
+    
+    UIEdgeInsets completeInsets = self.completeEdgeInsets;
+    
+    if (isRTL) {
+        self.placeholderRight.constant = -completeInsets.right;
+    } else {
+        self.placeholderLeft.constant = completeInsets.left;
+    }
+
+    self.placeholderTop.constant = completeInsets.top;
+}
+
+- (NSAttributedString *)suffixStringAfterUpdatingPriorRect:(inout CGRect *)priorRect isRTL:(BOOL)isRTL {
     __block NSRange effectiveRange = NSMakeRange(0, self.suffix.length);
     
     NSMutableParagraphStyle *paragraphStyle = [[self.attributedSuffix attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:&effectiveRange] mutableCopy];
@@ -160,12 +220,19 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     }
     
-    // Get the indent inside our label's positioning, since the priorRect includes bounds insets
-    CGFloat indent = CGRectGetMaxX(*priorRect) - self.suffixLeading.constant;
-    // Custom-provided spacing, too.
+    paragraphStyle.alignment = isRTL ? NSTextAlignmentRight : NSTextAlignmentLeft;
+    
+    CGFloat indent = -self.suffixLeading.constant;
+    
+    if (isRTL) {
+        indent += CGRectGetWidth(self.bounds) - CGRectGetMinX(*priorRect);
+    } else {
+        indent += CGRectGetMaxX(*priorRect);
+    }
+    
     indent += self.suffixSpacing;
     
-    if (indent >= self.suffixWidth.constant) {
+    if (indent >= CGRectGetWidth(self.suffixLabel.bounds) || isRTL) {
         CGFloat lineHeight = self.suffixLabel.font.lineHeight;
         lineHeight *= paragraphStyle.lineHeightMultiple ?: 1.0;
         lineHeight = MIN(MAX(lineHeight, paragraphStyle.minimumLineHeight), paragraphStyle.maximumLineHeight ?: CGFLOAT_MAX);
@@ -182,23 +249,30 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
 }
 
 - (void)updateSuffixLabelConstraints {
-    CGRect priorRect;
+    CGRect priorRect = CGRectZero;
+    BOOL isRTL = NO;
     
     if (self.suffixState & ZSWSuffixStatePlaceholder) {
-        priorRect = self.placeholderLabel.frame;
+        CGSize placeholderSize = self.placeholderLabel.intrinsicContentSize;
+        isRTL = [self isEffectivelyRightToLeftAtTextPosition:self.beginningOfDocument];
+        
+        if (self.placeholderLeft.isActive) {
+            priorRect = CGRectMake(self.placeholderLeft.constant, self.placeholderTop.constant, placeholderSize.width, placeholderSize.height);
+        } else {
+            priorRect = CGRectMake(CGRectGetMaxX(self.bounds) + self.placeholderRight.constant - placeholderSize.width, self.placeholderTop.constant, placeholderSize.width, placeholderSize.height);
+        }
     } else {
         priorRect = CGRectOffset([self caretRectForPosition:self.endOfDocument], 0, 1);
+        isRTL = [self isEffectivelyRightToLeftAtTextPosition:self.endOfDocument];
     }
     
-    CGRect insetBounds = ^{
-        CGRect insetRect = UIEdgeInsetsInsetRect(UIEdgeInsetsInsetRect(self.bounds, self.textContainerInset), self.contentInset);
-        return CGRectInset(insetRect, self.textContainer.lineFragmentPadding, 0);
-    }();
+    CGRect originlessBounds = (CGRect){CGPointZero, self.bounds.size};
+    CGRect insetBounds = UIEdgeInsetsInsetRect(originlessBounds, self.completeEdgeInsets);
     
     self.suffixLeading.constant = CGRectGetMinX(insetBounds);
-    self.suffixWidth.constant = CGRectGetWidth(insetBounds);
+    self.suffixWidth.constant = -(CGRectGetMaxX(originlessBounds) - CGRectGetMaxX(insetBounds) + CGRectGetMinX(insetBounds));
     
-    self.suffixLabel.attributedText = [self suffixStringAfterUpdatingPriorRect:&priorRect];
+    self.suffixLabel.attributedText = [self suffixStringAfterUpdatingPriorRect:&priorRect isRTL:isRTL];
     self.suffixTop.constant = CGRectGetMinY(priorRect);
 }
 
@@ -250,6 +324,10 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
         // Any text change means we need to update the suffix string.
         [self setNeedsUpdateConstraints];
     }
+}
+
+- (void)textViewDidChangeInputMode_ZSW {
+    [self setNeedsUpdateConstraints];
 }
 
 #pragma mark -
