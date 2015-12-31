@@ -40,9 +40,13 @@ IB_DESIGNABLE
 /*!
  * @brief Attributed suffix text
  *
- * If you provide an `NSParagraphStyleAttributeName` attribute,
- * its `firstLineHeadIndent` will be modified by the text view for the
- * suffix display, so any value you set will be overwritten.
+ * The following values in an NSParagraphStyleAttributeName will be
+ * modified by the view:
+ *
+ * - baseWritingDirection will be forced to .LeftToRight or .RightToLeft
+ *   depending on the user's writing direction.
+ * - firstLineHeadIndent will be modified to a value to adjust the label
+ *   positioning for the inputted text/placeholder.
  *
  * If you wish to set a custom head indent, you may wish to set a \ref suffixSpacing.
  */
