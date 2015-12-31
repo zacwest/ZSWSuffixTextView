@@ -120,7 +120,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
                                                  name:UITextViewTextDidChangeNotification
                                                object:self];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textViewDidChangeInputMode_ZSW)
+                                             selector:@selector(inputModeDidChange_ZSW)
                                                  name:UITextInputCurrentInputModeDidChangeNotification
                                                object:nil];
 }
@@ -328,7 +328,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     }
 }
 
-- (void)textViewDidChangeInputMode_ZSW {
+- (void)inputModeDidChange_ZSW {
     [self setNeedsUpdateConstraints];
 }
 
