@@ -45,6 +45,12 @@ class ZSWExampleViewController: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         title = NSLocalizedString("Update Status", comment: "")
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillChange:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -158,6 +164,14 @@ class ZSWExampleViewController: UIViewController {
         presentOptions(mood) { [weak self] updatedMood in
             self?.mood = updatedMood
         }
+    }
+    
+    func keyboardWillChange(note: NSNotification) {
+        guard let frame = note.userInfo?[UIKeyboardFrameEndUserInfoKey]?.CGRectValue else {
+            return
+        }
+        
+        exampleView.textView.contentInset.bottom = frame.size.height
     }
 }
 
