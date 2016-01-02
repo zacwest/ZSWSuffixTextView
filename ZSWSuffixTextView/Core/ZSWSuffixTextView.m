@@ -75,6 +75,11 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
     if (tappableClass) {
         self.suffixLabel = [[tappableClass alloc] initWithFrame:widthAppropriateFrame];
         [self.suffixLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(suffixGesture:)]];
+        [self.suffixLabel addGestureRecognizer:^{
+            UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(suffixGesture:)];
+            gr.numberOfTapsRequired = 2;
+            return gr;
+        }()];
         [self.suffixLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(suffixGesture:)]];
     } else {
         self.suffixLabel = [[UILabel alloc] initWithFrame:widthAppropriateFrame];
@@ -367,7 +372,17 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
     [self setNeedsUpdateConstraints];
 }
 
-- (void)suffixGesture:(UITapGestureRecognizer *)tapGR {
+- (void)suffixGesture:(UIGestureRecognizer *)gestureRecognizer {
+    if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *tapGR = (UITapGestureRecognizer *)gestureRecognizer;
+        if (tapGR.numberOfTapsRequired == 2) {
+            [[UIMenuController sharedMenuController] setTargetRect:[self caretRectForPosition:self.beginningOfDocument] inView:self];
+            [[UIMenuController sharedMenuController] setMenuVisible:YES animated:YES];
+        } else if ([UIMenuController sharedMenuController].menuVisible) {
+            [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
+        }
+    }
+    
     [self becomeFirstResponder];
 }
 
