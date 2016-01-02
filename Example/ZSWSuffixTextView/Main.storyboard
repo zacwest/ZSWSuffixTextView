@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
-                                <rect key="frame" x="0.0" y="72" width="600" height="520"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -37,10 +37,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" constant="8" symbolic="YES" id="12T-mw-1Mh"/>
                             <constraint firstItem="PFN-Y1-o2I" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="1dA-8u-eOn"/>
                             <constraint firstItem="PFN-Y1-o2I" firstAttribute="width" secondItem="TpU-gO-2f1" secondAttribute="width" id="THH-Ne-Moo"/>
-                            <constraint firstItem="Mvr-aV-6Um" firstAttribute="top" secondItem="PFN-Y1-o2I" secondAttribute="bottom" constant="8" symbolic="YES" id="kEz-oU-b5Z"/>
+                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="centerY" secondItem="TpU-gO-2f1" secondAttribute="centerY" id="frZ-jF-yTz"/>
+                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="height" secondItem="TpU-gO-2f1" secondAttribute="height" id="o5a-Jt-Bku"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Update Status" id="0se-ZX-9AG">
