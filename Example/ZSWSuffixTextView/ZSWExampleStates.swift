@@ -66,20 +66,16 @@ enum Time: Int, OptionsPresentable, SuffixConvertible {
     
     static var tagName: String { return "time" }
     var suffix: ZSWTaggedString? {
-        let baseString: String
-        
         switch self {
         case .None:
             return nil
         case .Today:
-            baseString = NSLocalizedString("today", comment: "")
+            return ZSWTaggedString(string: "<time>" + NSLocalizedString("today", comment: "") + "</time>")
         case .Tomorrow:
-            baseString = NSLocalizedString("tomorrow", comment: "")
+            return ZSWTaggedString(string: "<time>" + NSLocalizedString("tomorrow", comment: "") + "</time>")
         case .Thursday:
-            baseString = NSLocalizedString("Thursday", comment: "")
+            return ZSWTaggedString(string: NSLocalizedString("on <time>Thursday</time>", comment: ""))
         }
-        
-        return ZSWTaggedString(string: "<time>" + baseString + "</time>")
     }
     
     var description: String {
