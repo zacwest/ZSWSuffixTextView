@@ -272,6 +272,16 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
     
     NSMutableAttributedString *updatedString = [self.attributedSuffix mutableCopy];
     [updatedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:effectiveRange];
+    
+    BOOL isOS9 = [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){ .majorVersion = 9 }];
+    BOOL endsWithNewline = [updatedString.string hasSuffix:@"\n"];
+    
+    if (!isOS9 && !endsWithNewline) {
+        // iOS 8 needs a newline at the end to handle wrapping when the string is too short
+        // to hit multiple lines, or else it calculates the wrong height ignoring inset
+        [updatedString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
+    }
+    
     return updatedString;
 }
 

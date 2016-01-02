@@ -35,6 +35,8 @@ IB_DESIGNABLE
 
 /*!
  * @brief The suffix text
+ *
+ * On iOS 8, a newline is forcibly appended to this string to deal with iOS bugs.
  */
 @property (nullable, nonatomic) IBInspectable NSString *suffix;
 /*!
@@ -49,6 +51,8 @@ IB_DESIGNABLE
  *   positioning for the inputted text/placeholder.
  *
  * If you wish to set a custom head indent, you may wish to set a \ref suffixSpacing.
+ *
+ * On iOS 8, a newline is forcibly appended to this string to deal with iOS bugs.
  */
 @property (nullable, nonatomic) IBInspectable NSAttributedString *attributedSuffix;
 
