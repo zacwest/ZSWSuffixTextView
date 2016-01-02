@@ -18,12 +18,15 @@
 
 - (void)viewDidLoad
 {
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)]];
     
     self.suffixTextView.alwaysBounceVertical = YES;
+    self.suffixTextView.textContainerInset = UIEdgeInsetsMake(20, 20, 20, 20);
     
     NSMutableAttributedString *string = [self.suffixTextView.attributedSuffix mutableCopy];
     [string addAttribute:ZSWTappableLabelTappableRegionAttributeName value:@YES range:NSMakeRange(0, string.string.length)];

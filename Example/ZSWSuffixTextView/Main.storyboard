@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="whP-gf-Uak">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="jwg-k5-dUS">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Suffix Long Press Delegate-->
+        <!--Controller-->
         <scene sceneID="wQg-tq-qST">
             <objects>
-                <viewController id="whP-gf-Uak" customClass="ZSWViewController" sceneMemberID="viewController">
+                <viewController id="whP-gf-Uak" userLabel="Controller" customClass="ZSWViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uEw-UM-LJ8"/>
                         <viewControllerLayoutGuide type="bottom" id="Mvr-aV-6Um"/>
@@ -19,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
-                                <rect key="frame" x="20" y="28" width="560" height="272"/>
+                                <rect key="frame" x="0.0" y="72" width="600" height="520"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -38,17 +37,39 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leadingMargin" id="9D8-YL-Hed"/>
-                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="bottom" secondItem="Mvr-aV-6Um" secondAttribute="top" constant="-300" id="b11-gu-n0q"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="PFN-Y1-o2I" secondAttribute="trailing" id="iWb-lh-d55"/>
-                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" constant="8" symbolic="YES" id="icm-GP-aTd"/>
+                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" constant="8" symbolic="YES" id="12T-mw-1Mh"/>
+                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="1dA-8u-eOn"/>
+                            <constraint firstItem="PFN-Y1-o2I" firstAttribute="width" secondItem="TpU-gO-2f1" secondAttribute="width" id="THH-Ne-Moo"/>
+                            <constraint firstItem="Mvr-aV-6Um" firstAttribute="top" secondItem="PFN-Y1-o2I" secondAttribute="bottom" constant="8" symbolic="YES" id="kEz-oU-b5Z"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Update Status" id="0se-ZX-9AG">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="uOR-oa-RsL"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="9D7-UD-PpY"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="suffixTextView" destination="PFN-Y1-o2I" id="atf-0T-NgH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1117" y="433"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="4tZ-XW-AHN">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jwg-k5-dUS" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pKN-iF-539">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="whP-gf-Uak" kind="relationship" relationship="rootViewController" id="BZt-rV-vV4"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k6h-rU-Dmn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="305" y="433"/>
         </scene>
