@@ -12,6 +12,7 @@ import Swift
 
 class ZSWExampleViewController: UIViewController {
     var exampleView: ZSWExampleView { return self.view as! ZSWExampleView }
+    static let TagNameAttribute = "TagName"
     
     var location: Location = .None {
         didSet {
@@ -67,6 +68,7 @@ class ZSWExampleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        exampleView.textView.suffixTapDelegate = self
         exampleView.textView.placeholder = NSLocalizedString("What's up?", comment: "")
     }
     
@@ -87,7 +89,8 @@ class ZSWExampleViewController: UIViewController {
             options[$0] = .Static([
                 ZSWTappableLabelTappableRegionAttributeName: true,
                 ZSWTappableLabelHighlightedBackgroundAttributeName: UIColor.lightGrayColor(),
-                NSFontAttributeName: boldFont
+                NSFontAttributeName: boldFont,
+                ZSWExampleViewController.TagNameAttribute: $0
             ])
         }
         
@@ -139,19 +142,19 @@ class ZSWExampleViewController: UIViewController {
         presentViewController(controller, animated: true, completion: nil)
     }
     
-    func location(sender: UIControl) {
+    func location(sender: UIControl?) {
         presentOptions(location) { [weak self] updatedLocation in
             self?.location = updatedLocation
         }
     }
     
-    func time(sender: UIControl) {
+    func time(sender: UIControl?) {
         presentOptions(time) { [weak self] updatedTime in
             self?.time = updatedTime
         }
     }
     
-    func mood(sender: UIControl) {
+    func mood(sender: UIControl?) {
         presentOptions(mood) { [weak self] updatedMood in
             self?.mood = updatedMood
         }
@@ -160,6 +163,18 @@ class ZSWExampleViewController: UIViewController {
 
 extension ZSWExampleViewController: ZSWTappableLabelTapDelegate {
     func tappableLabel(tappableLabel: ZSWTappableLabel, tappedAtIndex idx: Int, withAttributes attributes: [String : AnyObject]) {
+        let option = suffixes.filter { possible in
+            return possible.dynamicType.tagName == attributes[ZSWExampleViewController.TagNameAttribute] as? String
+        }.first
         
+        if let option = option {
+            if option is Location {
+                self.location(nil)
+            } else if option is Time {
+                self.time(nil)
+            } else if option is Mood {
+                self.mood(nil)
+            }
+        }
     }
 }
