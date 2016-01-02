@@ -14,7 +14,7 @@ You can use either of these independently, or together. This is done without mod
 
 <img src="http://i.imgur.com/c2CAcmU.gif" width="320" height="142">
 
-You can view the [header file](https://github.com/zacwest/ZSWSuffixTextView/blob/master/ZSWSuffixTextView/Core/ZSWSuffixTextView.h) for more detailed documentation on configuration, or view the [example project](https://github.com/zacwest/ZSWSuffixTextView/blob/master/ZSWSuffixTextView/Example) for general usage.
+You can view the [header file](https://github.com/zacwest/ZSWSuffixTextView/blob/master/ZSWSuffixTextView/Core/ZSWSuffixTextView.h) for more detailed documentation on configuration, or view the [example project](https://github.com/zacwest/ZSWSuffixTextView/blob/master/Example/ZSWSuffixTextView) for general usage.
 
 ## Placeholder
 
