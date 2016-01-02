@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'EB837581509790C6C93818C5'
+               BlueprintIdentifier = '9E8253174DC31035DACA673A'
                BlueprintName = 'ZSWSuffixTextView'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'ZSWSuffixTextView.framework'>

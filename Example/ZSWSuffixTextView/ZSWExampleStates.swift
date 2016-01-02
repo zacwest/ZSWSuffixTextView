@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import ZSWTaggedString
 
 protocol SuffixConvertible {
-    var suffix: String? { get }
+    static var tagName: String { get }
+    var suffix: ZSWTaggedString? { get }
 }
 
 protocol OptionsPresentable: CustomStringConvertible, RawRepresentable {
@@ -27,14 +29,15 @@ enum Location: Int, OptionsPresentable, SuffixConvertible {
     }
     static var values: [Location] = [ .None, .SanFrancisco, .NewYork ]
     
-    var suffix: String? {
+    static var tagName: String { return "loc" }
+    var suffix: ZSWTaggedString? {
         switch self {
         case .None:
             return nil
         case .SanFrancisco:
-            return NSLocalizedString("in San Francisco", comment: "")
+            return ZSWTaggedString(string: NSLocalizedString("in <loc>San Francisco</loc>", comment: ""))
         case .NewYork:
-            return NSLocalizedString("in New York", comment: "")
+            return ZSWTaggedString(string: NSLocalizedString("in <loc>New York</loc>", comment: ""))
         }
     }
     
@@ -61,17 +64,22 @@ enum Time: Int, OptionsPresentable, SuffixConvertible {
     }
     static var values: [Time] = [ .None, .Today, .Tomorrow, .Thursday ]
     
-    var suffix: String? {
+    static var tagName: String { return "time" }
+    var suffix: ZSWTaggedString? {
+        let baseString: String
+        
         switch self {
         case .None:
             return nil
         case .Today:
-            return NSLocalizedString("today", comment: "")
+            baseString = NSLocalizedString("today", comment: "")
         case .Tomorrow:
-            return NSLocalizedString("tomorrow", comment: "")
+            baseString = NSLocalizedString("tomorrow", comment: "")
         case .Thursday:
-            return NSLocalizedString("Thursday", comment: "")
+            baseString = NSLocalizedString("Thursday", comment: "")
         }
+        
+        return ZSWTaggedString(string: "<time>" + baseString + "</time>")
     }
     
     var description: String {
@@ -100,18 +108,19 @@ enum Mood: Int, OptionsPresentable, SuffixConvertible {
     }
     static var values: [Mood] = [ .None, .Happy, .Sad, .Nauseous, .Perplexed ]
     
-    var suffix: String? {
+    static var tagName: String { return "mood" }
+    var suffix: ZSWTaggedString? {
         switch self {
         case .None:
             return nil
         case .Happy:
-            return NSLocalizedString("feeling happy", comment: "")
+            return ZSWTaggedString(string: NSLocalizedString("feeling <mood>happy</mood>", comment: ""))
         case .Sad:
-            return NSLocalizedString("feeling sad", comment: "")
+            return ZSWTaggedString(string: NSLocalizedString("feeling <mood>sad</mood>", comment: ""))
         case .Nauseous:
-            return NSLocalizedString("feeling nauseous", comment: "")
+            return ZSWTaggedString(string: NSLocalizedString("feeling <mood>nauseous</mood>", comment: ""))
         case .Perplexed:
-            return NSLocalizedString("feeling perplexed", comment: "")
+            return ZSWTaggedString(string: NSLocalizedString("feeling <mood>perplexed</mood>", comment: ""))
         }
     }
     

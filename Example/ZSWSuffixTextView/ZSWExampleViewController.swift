@@ -7,6 +7,8 @@
 //
 
 import ZSWSuffixTextView
+import ZSWTaggedString
+import Swift
 
 class ZSWExampleViewController: UIViewController {
     var exampleView: ZSWExampleView { return self.view as! ZSWExampleView }
@@ -68,13 +70,48 @@ class ZSWExampleViewController: UIViewController {
         exampleView.textView.placeholder = NSLocalizedString("What's up?", comment: "")
     }
     
+    private var suffixes: [SuffixConvertible] {
+        return [mood, time, location]
+    }
+    
     func updateSuffix() {
-        let suffixes = ([mood, time, location] as [SuffixConvertible]).flatMap { $0.suffix }
+        let baseFont = exampleView.textView.font ?? UIFont.systemFontOfSize(18.0)
         
-        if suffixes.isEmpty {
+        let options = ZSWTaggedStringOptions(baseAttributes: [
+            NSFontAttributeName: baseFont
+        ])
+        
+        let boldFont = UIFont.boldSystemFontOfSize(baseFont.pointSize ?? 18)
+        
+        suffixes.map { return $0.dynamicType.tagName }.forEach {
+            options[$0] = .Static([
+                ZSWTappableLabelTappableRegionAttributeName: true,
+                ZSWTappableLabelHighlightedBackgroundAttributeName: UIColor.lightGrayColor(),
+                NSFontAttributeName: boldFont
+            ])
+        }
+        
+        var attributedSuffixes = suffixes.flatMap { value -> NSAttributedString? in
+            if let suffix = value.suffix {
+                return try? suffix.attributedStringWithOptions(options)
+            } else {
+                return nil
+            }
+        }
+        
+        if attributedSuffixes.isEmpty {
             exampleView.textView.suffix = nil
         } else {
-            exampleView.textView.suffix = (["—"] + suffixes).joinWithSeparator(" ")
+            for var idx = attributedSuffixes.count - 1; idx > 0; idx-- {
+                attributedSuffixes.insert(NSAttributedString(string: " "), atIndex: idx)
+            }
+            
+            let suffix = attributedSuffixes.reduce(NSMutableAttributedString(string: "— ")) { base, value in
+                base.appendAttributedString(value)
+                return base
+            }
+            
+            exampleView.textView.attributedSuffix = suffix
         }
     }
     
