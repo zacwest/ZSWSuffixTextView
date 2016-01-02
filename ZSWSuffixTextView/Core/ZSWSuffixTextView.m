@@ -71,12 +71,15 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
     self.placeholderTextColor = nil;
     [self.containerForPlaceholder addSubview:self.placeholderLabel];
     
-    Class labelClass = NSClassFromString(ZSWTappableLabelClassName);
-    if (!labelClass) {
-        labelClass = [UILabel class];
+    Class tappableClass = NSClassFromString(ZSWTappableLabelClassName);
+    if (tappableClass) {
+        self.suffixLabel = [[tappableClass alloc] initWithFrame:widthAppropriateFrame];
+        [self.suffixLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(suffixGesture:)]];
+        [self.suffixLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(suffixGesture:)]];
+    } else {
+        self.suffixLabel = [[UILabel alloc] initWithFrame:widthAppropriateFrame];
     }
     
-    self.suffixLabel = [[labelClass alloc] initWithFrame:widthAppropriateFrame];
     self.suffixLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.suffixLabel.numberOfLines = 0;
     self.suffixLabel.font = self.font;
@@ -342,6 +345,10 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
 
 - (void)inputModeDidChange_ZSW {
     [self setNeedsUpdateConstraints];
+}
+
+- (void)suffixGesture:(UITapGestureRecognizer *)tapGR {
+    [self becomeFirstResponder];
 }
 
 #pragma mark -
