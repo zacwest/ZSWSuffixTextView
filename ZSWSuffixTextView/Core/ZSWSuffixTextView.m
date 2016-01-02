@@ -447,7 +447,7 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
     
     if (visibleState & ZSWSuffixStateSuffix) {
         CGSize updatedSize = contentSize;
-        updatedSize.height = CGRectGetMaxY(self.suffixLabel.frame);
+        updatedSize.height = CGRectGetMaxY(self.suffixLabel.frame) + self.textContainerInset.bottom;
         if (!CGSizeEqualToSize(self.contentSize, updatedSize)) {
             [super setContentSize:updatedSize];
         }
