@@ -16,5 +16,17 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
 
-  s.source_files = 'ZSWSuffixTextView/**/*'
+  s.default_subspecs = 'Core'
+
+  s.subspec 'Core' do |core|
+    core.source_files = 'ZSWSuffixTextView/Core/**/*.{h,m}'
+    core.public_header_files = 'ZSWSuffixTextView/Core/**/*.h'
+  end
+
+  s.subspec 'Tappable' do |tappable|
+    tappable.dependency 'ZSWSuffixTextView/Core'
+    tappable.dependency 'ZSWTappableLabel', '>= 1.3'
+    tappable.source_files = 'ZSWSuffixTextView/Tappable/**/*.{h,m}'
+    tappable.public_header_files = 'ZSWSuffixTextView/Tappable/**/*.h'
+  end
 end

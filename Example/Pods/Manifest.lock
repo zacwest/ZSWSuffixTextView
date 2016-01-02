@@ -1,32 +1,22 @@
 PODS:
-  - Expecta (1.0.5)
-  - Expecta+Snapshots (2.0.0):
-    - Expecta (~> 1.0)
-    - FBSnapshotTestCase/Core (~> 2.0.3)
-  - FBSnapshotTestCase (2.0.7):
-    - FBSnapshotTestCase/SwiftSupport (= 2.0.7)
-  - FBSnapshotTestCase/Core (2.0.7)
-  - FBSnapshotTestCase/SwiftSupport (2.0.7):
-    - FBSnapshotTestCase/Core
-  - Specta (1.0.5)
-  - ZSWSuffixTextView (1.0)
+  - ZSWSuffixTextView (1.0):
+    - ZSWSuffixTextView/Core (= 1.0)
+  - ZSWSuffixTextView/Core (1.0)
+  - ZSWSuffixTextView/Tappable (1.0):
+    - ZSWSuffixTextView/Core
+    - ZSWTappableLabel (>= 1.3)
+  - ZSWTappableLabel (1.3)
 
 DEPENDENCIES:
-  - Expecta
-  - Expecta+Snapshots
-  - FBSnapshotTestCase
-  - Specta
   - ZSWSuffixTextView (from `../`)
+  - ZSWSuffixTextView/Tappable (from `../`)
 
 EXTERNAL SOURCES:
   ZSWSuffixTextView:
     :path: ../
 
 SPEC CHECKSUMS:
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
-  FBSnapshotTestCase: 7e85180d0d141a0cf472352edda7e80d7eaeb547
-  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
-  ZSWSuffixTextView: 01da9aedebe8fecb317987f07f934bbaeaf0f848
+  ZSWSuffixTextView: 8f90981f575701cabe615297aeac3eb8a12d5f04
+  ZSWTappableLabel: 610ec78ab2f7aa14dde9ee7ea03091cabb07e5dc
 
 COCOAPODS: 0.39.0

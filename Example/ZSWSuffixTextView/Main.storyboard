@@ -30,6 +30,10 @@
                                         <real key="value" value="4"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="suffixLongPressDelegate" destination="whP-gf-Uak" id="crc-hZ-ru5"/>
+                                    <outlet property="suffixTapDelegate" destination="whP-gf-Uak" id="P1B-3v-QZi"/>
+                                </connections>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

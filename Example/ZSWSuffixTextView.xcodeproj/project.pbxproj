@@ -59,11 +59,9 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		7E0320F0DFA90B28EC6F17DC /* Pods-ZSWSuffixTextView_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSWSuffixTextView_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZSWSuffixTextView_Tests/Pods-ZSWSuffixTextView_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		94CF8F2B2085170E8ACF33A8 /* Pods_ZSWSuffixTextView_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZSWSuffixTextView_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D5336DA5D65CDCFF3344FD /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		B94F82556C851BA5059C90F3 /* Pods-ZSWSuffixTextView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSWSuffixTextView_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZSWSuffixTextView_Tests/Pods-ZSWSuffixTextView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		EFA3AC87E2A1AD062733C8A8 /* Pods_ZSWSuffixTextView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZSWSuffixTextView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F87927E7A06FF0A291FE1AF5 /* Pods-ZSWSuffixTextView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSWSuffixTextView_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZSWSuffixTextView_Example/Pods-ZSWSuffixTextView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F8F34969B31C71F1F1A4625B /* Pods-ZSWSuffixTextView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZSWSuffixTextView_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZSWSuffixTextView_Example/Pods-ZSWSuffixTextView_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -190,8 +188,6 @@
 			children = (
 				F87927E7A06FF0A291FE1AF5 /* Pods-ZSWSuffixTextView_Example.debug.xcconfig */,
 				F8F34969B31C71F1F1A4625B /* Pods-ZSWSuffixTextView_Example.release.xcconfig */,
-				B94F82556C851BA5059C90F3 /* Pods-ZSWSuffixTextView_Tests.debug.xcconfig */,
-				7E0320F0DFA90B28EC6F17DC /* Pods-ZSWSuffixTextView_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -543,7 +539,6 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B94F82556C851BA5059C90F3 /* Pods-ZSWSuffixTextView_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -567,7 +562,6 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E0320F0DFA90B28EC6F17DC /* Pods-ZSWSuffixTextView_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

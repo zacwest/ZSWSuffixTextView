@@ -14,6 +14,8 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     ZSWSuffixStateSuffix = 0b10
 };
 
+static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
+
 @interface ZSWSuffixTextView()
 @property (nonatomic) UILabel *placeholderLabel;
 @property (nonatomic) UILabel *suffixLabel;
@@ -69,7 +71,7 @@ typedef NS_OPTIONS(NSInteger, ZSWSuffixState) {
     self.placeholderTextColor = nil;
     [self.containerForPlaceholder addSubview:self.placeholderLabel];
     
-    Class labelClass = NSClassFromString(@"ZSWTappableLabel");
+    Class labelClass = NSClassFromString(ZSWTappableLabelClassName);
     if (!labelClass) {
         labelClass = [UILabel class];
     }

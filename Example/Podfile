@@ -5,4 +5,5 @@ use_frameworks!
 
 target 'ZSWSuffixTextView_Example', :exclusive => true do
   pod "ZSWSuffixTextView", :path => "../"
+  pod "ZSWSuffixTextView/Tappable", :path => "../"
 end
