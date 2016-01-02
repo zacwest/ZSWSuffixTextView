@@ -61,6 +61,15 @@ class ZSWExampleViewController: UIViewController {
         super.viewWillAppear(animated)
         
         exampleView.textView.becomeFirstResponder()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        exampleView.textView.suffixTapDelegate = self
+        exampleView.textView.placeholder = NSLocalizedString("What's up?", comment: "")
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel:")
         
         _inputAccessoryView.toolbar.items = [
             UIBarButtonItem(title: "Location", style: .Plain, target: self, action: "location:"),
@@ -71,15 +80,15 @@ class ZSWExampleViewController: UIViewController {
         ]
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        exampleView.textView.suffixTapDelegate = self
-        exampleView.textView.placeholder = NSLocalizedString("What's up?", comment: "")
-    }
-    
     override func canBecomeFirstResponder() -> Bool {
         return true
+    }
+    
+    func cancel(sender: UIControl?) {
+        mood = .None
+        time = .None
+        location = .None
+        exampleView.textView.text = nil
     }
     
     private var suffixes: [SuffixConvertible] {
