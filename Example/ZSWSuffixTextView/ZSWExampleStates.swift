@@ -8,12 +8,16 @@
 
 import Foundation
 
+protocol SuffixConvertible {
+    var suffix: String? { get }
+}
+
 protocol OptionsPresentable: CustomStringConvertible, RawRepresentable {
     static var values: [Self] { get }
     static var title: String { get }
 }
 
-enum Location: Int, OptionsPresentable {
+enum Location: Int, OptionsPresentable, SuffixConvertible {
     case None
     case SanFrancisco
     case NewYork
@@ -22,6 +26,17 @@ enum Location: Int, OptionsPresentable {
         return NSLocalizedString("Location", comment: "")
     }
     static var values: [Location] = [ .None, .SanFrancisco, .NewYork ]
+    
+    var suffix: String? {
+        switch self {
+        case .None:
+            return nil
+        case .SanFrancisco:
+            return NSLocalizedString("in San Francisco", comment: "")
+        case .NewYork:
+            return NSLocalizedString("in New York", comment: "")
+        }
+    }
     
     var description: String {
         switch self {
@@ -35,7 +50,7 @@ enum Location: Int, OptionsPresentable {
     }
 }
 
-enum Time: Int, OptionsPresentable {
+enum Time: Int, OptionsPresentable, SuffixConvertible {
     case None
     case Today
     case Tomorrow
@@ -45,6 +60,19 @@ enum Time: Int, OptionsPresentable {
         return NSLocalizedString("Time", comment: "")
     }
     static var values: [Time] = [ .None, .Today, .Tomorrow, .Thursday ]
+    
+    var suffix: String? {
+        switch self {
+        case .None:
+            return nil
+        case .Today:
+            return NSLocalizedString("today", comment: "")
+        case .Tomorrow:
+            return NSLocalizedString("tomorrow", comment: "")
+        case .Thursday:
+            return NSLocalizedString("Thursday", comment: "")
+        }
+    }
     
     var description: String {
         switch self {
@@ -60,7 +88,7 @@ enum Time: Int, OptionsPresentable {
     }
 }
 
-enum Mood: Int, OptionsPresentable {
+enum Mood: Int, OptionsPresentable, SuffixConvertible {
     case None
     case Happy
     case Sad
@@ -71,6 +99,21 @@ enum Mood: Int, OptionsPresentable {
         return NSLocalizedString("Mood", comment: "")
     }
     static var values: [Mood] = [ .None, .Happy, .Sad, .Nauseous, .Perplexed ]
+    
+    var suffix: String? {
+        switch self {
+        case .None:
+            return nil
+        case .Happy:
+            return NSLocalizedString("feeling happy", comment: "")
+        case .Sad:
+            return NSLocalizedString("feeling sad", comment: "")
+        case .Nauseous:
+            return NSLocalizedString("feeling nauseous", comment: "")
+        case .Perplexed:
+            return NSLocalizedString("feeling perplexed", comment: "")
+        }
+    }
     
     var description: String {
         switch self {

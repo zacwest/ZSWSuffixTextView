@@ -69,25 +69,12 @@ class ZSWExampleViewController: UIViewController {
     }
     
     func updateSuffix() {
-        var suffixStrings = [String]()
+        let suffixes = ([mood, time, location] as [SuffixConvertible]).flatMap { $0.suffix }
         
-        if mood != .None {
-            suffixStrings.append("feeling \(mood)")
-        }
-        
-        if time != .None {
-            suffixStrings.append("\(time)")
-        }
-        
-        if location != .None {
-            suffixStrings.append("in \(location)")
-        }
-        
-        if suffixStrings.isEmpty {
+        if suffixes.isEmpty {
             exampleView.textView.suffix = nil
         } else {
-            suffixStrings.insert("—", atIndex: 0)
-            exampleView.textView.suffix = suffixStrings.joinWithSeparator(" ")
+            exampleView.textView.suffix = (["—"] + suffixes).joinWithSeparator(" ")
         }
     }
     
