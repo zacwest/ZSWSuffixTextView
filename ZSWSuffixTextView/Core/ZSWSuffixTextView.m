@@ -174,7 +174,15 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
 
 - (BOOL)isEffectivelyRightToLeftAtTextPosition:(UITextPosition *)textPosition {
     BOOL isViewRTL = ^{
-        switch ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute]) {
+        UIUserInterfaceLayoutDirection direction;
+        
+        if ([self respondsToSelector:@selector(semanticContentAttribute)]) {
+            direction = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute];
+        } else {
+            direction = [UIApplication sharedApplication].userInterfaceLayoutDirection;
+        }
+        
+        switch (direction) {
             case UIUserInterfaceLayoutDirectionLeftToRight:
                 return NO;
             case UIUserInterfaceLayoutDirectionRightToLeft:
