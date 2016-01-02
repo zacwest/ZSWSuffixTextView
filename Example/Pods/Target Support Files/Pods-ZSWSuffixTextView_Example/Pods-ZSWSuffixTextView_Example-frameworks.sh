@@ -85,7 +85,9 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-ZSWSuffixTextView_Example/ZSWSuffixTextView.framework"
+  install_framework "Pods-ZSWSuffixTextView_Example/ZSWTappableLabel.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-ZSWSuffixTextView_Example/ZSWSuffixTextView.framework"
+  install_framework "Pods-ZSWSuffixTextView_Example/ZSWTappableLabel.framework"
 fi

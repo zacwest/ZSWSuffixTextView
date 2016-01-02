@@ -6,12 +6,3 @@ use_frameworks!
 target 'ZSWSuffixTextView_Example', :exclusive => true do
   pod "ZSWSuffixTextView", :path => "../"
 end
-
-target 'ZSWSuffixTextView_Tests', :exclusive => true do
-  pod "ZSWSuffixTextView", :path => "../"
-
-  pod 'Specta'
-  pod 'Expecta'
-  pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
-end
