@@ -8,22 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		1176AAEA1C2FCA8000E2BF3C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1176AAE91C2FCA8000E2BF3C /* Launch Screen.storyboard */; };
+		11BC27AE1C3797C500970E23 /* ZSWExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC27AD1C3797C500970E23 /* ZSWExampleViewController.swift */; };
+		11BC27B01C3799FE00970E23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC27AF1C3799FE00970E23 /* AppDelegate.swift */; };
+		11BC27B21C379A7200970E23 /* ZSWInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC27B11C379A7200970E23 /* ZSWInputAccessoryView.swift */; };
+		11BC27B41C379A9100970E23 /* ZSWExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC27B31C379A9100970E23 /* ZSWExampleView.swift */; };
 		153DB6E00818305D95560BCD /* Pods_ZSWSuffixTextView_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CF8F2B2085170E8ACF33A8 /* Pods_ZSWSuffixTextView_Example.framework */; };
 		1B9971150BC15EFD8966A31E /* Pods_ZSWSuffixTextView_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFA3AC87E2A1AD062733C8A8 /* Pods_ZSWSuffixTextView_Tests.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
-		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* ZSWAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* ZSWAppDelegate.m */; };
-		6003F5A7195388D20070C39A /* ZSWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* ZSWViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +38,11 @@
 
 /* Begin PBXFileReference section */
 		1176AAE91C2FCA8000E2BF3C /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		11BC27AC1C3797C500970E23 /* ZSWSuffixTextView_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZSWSuffixTextView_Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		11BC27AD1C3797C500970E23 /* ZSWExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZSWExampleViewController.swift; sourceTree = "<group>"; };
+		11BC27AF1C3799FE00970E23 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		11BC27B11C379A7200970E23 /* ZSWInputAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZSWInputAccessoryView.swift; sourceTree = "<group>"; };
+		11BC27B31C379A9100970E23 /* ZSWExampleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZSWExampleView.swift; sourceTree = "<group>"; };
 		23CE4BDCF086884668E646A9 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		5233342C36BA33F7C9F3DF41 /* ZSWSuffixTextView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ZSWSuffixTextView.podspec; path = ../ZSWSuffixTextView.podspec; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* ZSWSuffixTextView_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZSWSuffixTextView_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,12 +51,7 @@
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6003F595195388D20070C39A /* ZSWSuffixTextView-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ZSWSuffixTextView-Info.plist"; sourceTree = "<group>"; };
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6003F59B195388D20070C39A /* ZSWSuffixTextView-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZSWSuffixTextView-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* ZSWAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZSWAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* ZSWAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZSWAppDelegate.m; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* ZSWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZSWViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* ZSWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZSWViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* ZSWSuffixTextView_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZSWSuffixTextView_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -59,7 +59,6 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		94CF8F2B2085170E8ACF33A8 /* Pods_ZSWSuffixTextView_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZSWSuffixTextView_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D5336DA5D65CDCFF3344FD /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		EFA3AC87E2A1AD062733C8A8 /* Pods_ZSWSuffixTextView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZSWSuffixTextView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,14 +129,14 @@
 		6003F593195388D20070C39A /* Example for ZSWSuffixTextView */ = {
 			isa = PBXGroup;
 			children = (
-				6003F59C195388D20070C39A /* ZSWAppDelegate.h */,
-				6003F59D195388D20070C39A /* ZSWAppDelegate.m */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
-				6003F5A5195388D20070C39A /* ZSWViewController.h */,
-				6003F5A6195388D20070C39A /* ZSWViewController.m */,
+				11BC27AC1C3797C500970E23 /* ZSWSuffixTextView_Example-Bridging-Header.h */,
+				1176AAE91C2FCA8000E2BF3C /* Launch Screen.storyboard */,
+				11BC27AF1C3799FE00970E23 /* AppDelegate.swift */,
+				11BC27B31C379A9100970E23 /* ZSWExampleView.swift */,
+				11BC27AD1C3797C500970E23 /* ZSWExampleViewController.swift */,
+				11BC27B11C379A7200970E23 /* ZSWInputAccessoryView.swift */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
-				1176AAE91C2FCA8000E2BF3C /* Launch Screen.storyboard */,
 			);
 			name = "Example for ZSWSuffixTextView";
 			path = ZSWSuffixTextView;
@@ -148,7 +147,6 @@
 			children = (
 				6003F595195388D20070C39A /* ZSWSuffixTextView-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
-				6003F599195388D20070C39A /* main.m */,
 				6003F59B195388D20070C39A /* ZSWSuffixTextView-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -275,7 +273,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				1176AAEA1C2FCA8000E2BF3C /* Launch Screen.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
@@ -390,9 +387,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F59E195388D20070C39A /* ZSWAppDelegate.m in Sources */,
-				6003F5A7195388D20070C39A /* ZSWViewController.m in Sources */,
-				6003F59A195388D20070C39A /* main.m in Sources */,
+				11BC27B01C3799FE00970E23 /* AppDelegate.swift in Sources */,
+				11BC27B41C379A9100970E23 /* ZSWExampleView.swift in Sources */,
+				11BC27B21C379A7200970E23 /* ZSWInputAccessoryView.swift in Sources */,
+				11BC27AE1C3797C500970E23 /* ZSWExampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,12 +510,16 @@
 			baseConfigurationReference = F87927E7A06FF0A291FE1AF5 /* Pods-ZSWSuffixTextView_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView-Prefix.pch";
 				INFOPLIST_FILE = "ZSWSuffixTextView/ZSWSuffixTextView-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView_Example-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -527,12 +529,15 @@
 			baseConfigurationReference = F8F34969B31C71F1F1A4625B /* Pods-ZSWSuffixTextView_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView-Prefix.pch";
 				INFOPLIST_FILE = "ZSWSuffixTextView/ZSWSuffixTextView-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView_Example-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
