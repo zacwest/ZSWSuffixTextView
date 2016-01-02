@@ -200,6 +200,8 @@ static NSString *const ZSWTappableLabelClassName = @"ZSWTappableLabel";
     CGFloat lineFragmentPadding = self.textContainer.lineFragmentPadding;
     
     UIEdgeInsets contentInset = self.contentInset;
+    // No content inset on top because we base off {0,0} no matter what
+    contentInset.top = 0;
     
     UIEdgeInsets insets = self.textContainerInset;
     insets.left += lineFragmentPadding + contentInset.left;
