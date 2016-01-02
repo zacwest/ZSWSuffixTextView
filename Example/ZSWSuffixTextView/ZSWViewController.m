@@ -27,8 +27,9 @@
     self.suffixTextView.textContainerInset = UIEdgeInsetsMake(20, 20, 20, 20);
     
     NSMutableAttributedString *string = [self.suffixTextView.attributedSuffix mutableCopy];
-    [string addAttribute:ZSWTappableLabelTappableRegionAttributeName value:@YES range:NSMakeRange(0, string.string.length)];
-    [string addAttribute:ZSWTappableLabelHighlightedBackgroundAttributeName value:[UIColor colorWithWhite:0.5 alpha:1.0] range:NSMakeRange(0, string.string.length)];
+    NSRange sfRange = [string.string rangeOfString:@"San Francisco"];
+    [string addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18.0] range:sfRange];
+    
     self.suffixTextView.attributedSuffix = string;
 }
 

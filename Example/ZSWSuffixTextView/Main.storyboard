@@ -20,13 +20,16 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PFN-Y1-o2I" customClass="ZSWSuffixTextView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="How are you feeling?"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="— at home in San Francisco"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="What's up?"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="— in San Francisco"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="suffixSpacing">
                                         <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="suffixTextColor">
+                                        <color key="value" red="0.44371448863636354" green="0.44371448863636354" blue="0.44371448863636354" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
