@@ -40,6 +40,8 @@ var suffixSpacing: CGFloat
 
 If you use an attributed version, be aware that the `NSParagraphStyle` will be modified (or added) to handle positioning (via `firstLineHeadIndent`) and forced right-to-left (via `baseWritingDirection`).
 
+A good way to generate your suffix text, especially when you want sub-string coloring, is to use [ZSWTaggedString](https://github.com/zacwest/ZSWTaggedString) which allows generating attributed strings easily.
+
 ## Tappable
 
 With the `Tappable` subspec, this class uses [ZSWTappableLabel](https://github.com/zacwest/ZSWTappableLabel). This allows regions of your suffix text to be tappable, similar to the Facebook status updating screen. This is done via two exposed properties:
