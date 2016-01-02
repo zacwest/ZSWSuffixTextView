@@ -69,7 +69,9 @@ class ZSWExampleViewController: UIViewController {
         exampleView.textView.suffixTapDelegate = self
         exampleView.textView.placeholder = NSLocalizedString("What's up?", comment: "")
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel:")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "clear:")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "clear:")
+
         
         _inputAccessoryView.toolbar.items = [
             UIBarButtonItem(title: "Location", style: .Plain, target: self, action: "location:"),
@@ -84,7 +86,7 @@ class ZSWExampleViewController: UIViewController {
         return true
     }
     
-    func cancel(sender: UIControl?) {
+    func clear(sender: UIControl?) {
         mood = .None
         time = .None
         location = .None
