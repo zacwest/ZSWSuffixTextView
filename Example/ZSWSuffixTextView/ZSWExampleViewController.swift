@@ -124,10 +124,12 @@ class ZSWExampleViewController: UIViewController {
         if attributedSuffixes.isEmpty {
             exampleView.textView.suffix = nil
         } else {
+            // insert spaces in-between elements
             for var idx = attributedSuffixes.count - 1; idx > 0; idx-- {
                 attributedSuffixes.insert(NSAttributedString(string: " "), atIndex: idx)
             }
             
+            // combine it all together into one string
             let suffix = attributedSuffixes.reduce(NSMutableAttributedString(string: "— ")) { base, value in
                 base.appendAttributedString(value)
                 return base
