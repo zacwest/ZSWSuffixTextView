@@ -7,87 +7,6 @@
 //
 
 import ZSWSuffixTextView
-import ZSWTaggedString
-
-protocol OptionsPresentable: CustomStringConvertible, RawRepresentable {
-    static var values: [Self] { get }
-    static var title: String { get }
-}
-
-enum Location: Int, OptionsPresentable {
-    case None
-    case SanFrancisco
-    case NewYork
-    
-    static var title: String {
-        return NSLocalizedString("Location", comment: "")
-    }
-    static var values: [Location] = [ .None, .SanFrancisco, .NewYork ]
-    
-    var description: String {
-        switch self {
-        case .None:
-            return NSLocalizedString("None", comment: "")
-        case .SanFrancisco:
-            return NSLocalizedString("San Francisco", comment: "")
-        case .NewYork:
-            return NSLocalizedString("New York", comment: "")
-        }
-    }
-}
-
-enum Time: Int, OptionsPresentable {
-    case None
-    case Today
-    case Tomorrow
-    case Thursday
-    
-    static var title: String {
-        return NSLocalizedString("Time", comment: "")
-    }
-    static var values: [Time] = [ .None, .Today, .Tomorrow, .Thursday ]
-    
-    var description: String {
-        switch self {
-        case .None:
-            return NSLocalizedString("None", comment: "")
-        case .Today:
-            return NSLocalizedString("Today", comment: "")
-        case .Tomorrow:
-            return NSLocalizedString("Tomorrow", comment: "")
-        case .Thursday:
-            return NSLocalizedString("Thursday", comment: "")
-        }
-    }
-}
-
-enum Mood: Int, OptionsPresentable {
-    case None
-    case Happy
-    case Sad
-    case Nauseous
-    case Perplexed
-    
-    static var title: String {
-        return NSLocalizedString("Mood", comment: "")
-    }
-    static var values: [Mood] = [ .None, .Happy, .Sad, .Nauseous, .Perplexed ]
-    
-    var description: String {
-        switch self {
-        case .None:
-            return NSLocalizedString("None", comment: "")
-        case .Happy:
-            return NSLocalizedString("Happy", comment: "")
-        case .Sad:
-            return NSLocalizedString("Sad", comment: "")
-        case .Nauseous:
-            return NSLocalizedString("Nauseous", comment: "")
-        case .Perplexed:
-            return NSLocalizedString("Perplexed", comment: "")
-        }
-    }
-}
 
 class ZSWExampleViewController: UIViewController {
     var exampleView: ZSWExampleView { return self.view as! ZSWExampleView }
@@ -150,7 +69,26 @@ class ZSWExampleViewController: UIViewController {
     }
     
     func updateSuffix() {
+        var suffixStrings = [String]()
         
+        if mood != .None {
+            suffixStrings.append("feeling \(mood)")
+        }
+        
+        if time != .None {
+            suffixStrings.append("\(time)")
+        }
+        
+        if location != .None {
+            suffixStrings.append("in \(location)")
+        }
+        
+        if suffixStrings.isEmpty {
+            exampleView.textView.suffix = nil
+        } else {
+            suffixStrings.insert("—", atIndex: 0)
+            exampleView.textView.suffix = suffixStrings.joinWithSeparator(" ")
+        }
     }
     
     func presentOptions<T: OptionsPresentable where T.RawValue: Equatable>(currentValue: T, completion: (T) -> Void) {
@@ -193,5 +131,11 @@ class ZSWExampleViewController: UIViewController {
         presentOptions(mood) { [weak self] updatedMood in
             self?.mood = updatedMood
         }
+    }
+}
+
+extension ZSWExampleViewController: ZSWTappableLabelTapDelegate {
+    func tappableLabel(tappableLabel: ZSWTappableLabel, tappedAtIndex idx: Int, withAttributes attributes: [String : AnyObject]) {
+        
     }
 }

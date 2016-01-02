@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		114B18B31C37A7CC00DF337E /* ZSWExampleStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114B18B21C37A7CC00DF337E /* ZSWExampleStates.swift */; };
 		1176AAEA1C2FCA8000E2BF3C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1176AAE91C2FCA8000E2BF3C /* Launch Screen.storyboard */; };
 		11BC27AE1C3797C500970E23 /* ZSWExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC27AD1C3797C500970E23 /* ZSWExampleViewController.swift */; };
 		11BC27B01C3799FE00970E23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BC27AF1C3799FE00970E23 /* AppDelegate.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		114B18B21C37A7CC00DF337E /* ZSWExampleStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZSWExampleStates.swift; sourceTree = "<group>"; };
 		1176AAE91C2FCA8000E2BF3C /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		11BC27AC1C3797C500970E23 /* ZSWSuffixTextView_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZSWSuffixTextView_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		11BC27AD1C3797C500970E23 /* ZSWExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZSWExampleViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				11BC27AC1C3797C500970E23 /* ZSWSuffixTextView_Example-Bridging-Header.h */,
 				1176AAE91C2FCA8000E2BF3C /* Launch Screen.storyboard */,
 				11BC27AF1C3799FE00970E23 /* AppDelegate.swift */,
+				114B18B21C37A7CC00DF337E /* ZSWExampleStates.swift */,
 				11BC27B31C379A9100970E23 /* ZSWExampleView.swift */,
 				11BC27AD1C3797C500970E23 /* ZSWExampleViewController.swift */,
 				11BC27B11C379A7200970E23 /* ZSWInputAccessoryView.swift */,
@@ -389,6 +392,7 @@
 			files = (
 				11BC27B01C3799FE00970E23 /* AppDelegate.swift in Sources */,
 				11BC27B41C379A9100970E23 /* ZSWExampleView.swift in Sources */,
+				114B18B31C37A7CC00DF337E /* ZSWExampleStates.swift in Sources */,
 				11BC27B21C379A7200970E23 /* ZSWInputAccessoryView.swift in Sources */,
 				11BC27AE1C3797C500970E23 /* ZSWExampleViewController.swift in Sources */,
 			);
@@ -511,15 +515,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView-Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "ZSWSuffixTextView/ZSWSuffixTextView-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView_Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -530,14 +538,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView-Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "ZSWSuffixTextView/ZSWSuffixTextView-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "ZSWSuffixTextView/ZSWSuffixTextView_Example-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

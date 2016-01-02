@@ -21,6 +21,7 @@ class ZSWExampleView: UIView {
         textView.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         // This is another inset (lol UIKit) which is on the left & right
         textView.textContainer.lineFragmentPadding = 0
+        
         addSubview(textView)
     }
     
