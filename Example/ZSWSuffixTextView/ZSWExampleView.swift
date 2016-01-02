@@ -16,6 +16,8 @@ class ZSWExampleView: UIView {
         super.init(frame: frame)
         
         textView.alwaysBounceVertical = true
+        textView.keyboardDismissMode = .Interactive
+        
         textView.font = UIFont.systemFontOfSize(18.0)
         // This is the edges on the top, left, bottom & right of the text view
         textView.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)

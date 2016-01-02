@@ -78,6 +78,10 @@ class ZSWExampleViewController: UIViewController {
         exampleView.textView.placeholder = NSLocalizedString("What's up?", comment: "")
     }
     
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
     private var suffixes: [SuffixConvertible] {
         return [mood, time, location]
     }
@@ -171,7 +175,10 @@ class ZSWExampleViewController: UIViewController {
             return
         }
         
-        exampleView.textView.contentInset.bottom = frame.size.height
+        let overlappedFrame = view.bounds.intersect(frame)
+        
+        exampleView.textView.contentInset.bottom = overlappedFrame.size.height
+        exampleView.textView.scrollIndicatorInsets.bottom = overlappedFrame.size.height
     }
 }
 
