@@ -21,6 +21,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)]];
+    
+    self.suffixTextView.alwaysBounceVertical = YES;
+    
     NSMutableAttributedString *string = [self.suffixTextView.attributedSuffix mutableCopy];
     [string addAttribute:ZSWTappableLabelTappableRegionAttributeName value:@YES range:NSMakeRange(0, string.string.length)];
     [string addAttribute:ZSWTappableLabelHighlightedBackgroundAttributeName value:[UIColor colorWithWhite:0.5 alpha:1.0] range:NSMakeRange(0, string.string.length)];
@@ -31,6 +35,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)tapped:(UITapGestureRecognizer *)gr {
+    [self.view endEditing:YES];
 }
 
 - (void)tappableLabel:(ZSWTappableLabel *)tappableLabel
