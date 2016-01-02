@@ -1,10 +1,11 @@
 Pod::Spec.new do |s|
   s.name             = "ZSWSuffixTextView"
   s.version          = "1.0"
-  s.summary          = "UITextView subclass which displays a placeholder and suffix after editable text"
+  s.summary          = "UITextView subclass which displays a suffix after editable text and a placeholder"
   s.description      = <<-DESC
-                        ZSWSuffixTextView allows you to set a suffix string, or non-editable text to be
-                        appended after the editable text inside the text view, as well as a placeholder.
+                        ZSWSuffixTextView is a `UITextView` subclass which supports suffix text, appended after the editable area, and placeholder text, for when nothing has been entered.
+
+                        You can use either of these independently, or together.
                         Read more: https://github.com/zacwest/ZSWSuffixTextView
                        DESC
   s.homepage         = "https://github.com/zacwest/ZSWSuffixTextView"

@@ -5,10 +5,10 @@
 [![License](https://img.shields.io/cocoapods/l/ZSWSuffixTextView.svg?style=flat)](http://cocoapods.org/pods/ZSWSuffixTextView)
 [![Platform](https://img.shields.io/cocoapods/p/ZSWSuffixTextView.svg?style=flat)](http://cocoapods.org/pods/ZSWSuffixTextView)
 
-ZSWSuffixTextView is a `UITextView` subclass which exposes two main features:
+ZSWSuffixTextView is a `UITextView` subclass which supports:
 
 - Suffix text, appended after the editable area
-- Placeholder text
+- Placeholder text, for when nothing has been entered
 
 You can use either of these independently, or together. This is done without modifying any text so your delegates do not need modification for text processing. It's a drop-in replacement.
 
